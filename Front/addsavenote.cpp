@@ -2,47 +2,48 @@
 #include "ui_addsavenote.h"
 
 
-using namespace std;
-
-MainWindow::MainWindow(QWidget *parent)
+AddSaveNote::AddSaveNote(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->KeywordsTEdit->setPlaceholderText(QString("Record format: Keyword1;Keyword2;Keyword3"));
 }
 
-MainWindow::~MainWindow()
+AddSaveNote::~AddSaveNote()
 {
     delete ui;
 }
 
 struct Note
 {
-    QString sTitle;
-    QString sDescription;
-    vector <QString> vsKeywords;
-    QString sCategory;
-    QString sAccessUser;
+    QString m_sTitle;
+    QString m_sDescription;
+    std::vector <QString> m_vsKeywords;
+    QString m_sCategory;
+    QString m_sAccessUser;
 
-    Note( QString _sTitle, QString _sDescription, vector <QString> _vsKeywords,
+    Note( QString _sTitle, QString _sDescription, std::vector <QString> _vsKeywords,
             QString _sCategory, QString _sAccessUser)
     {
-        sTitle = _sTitle;
-        sDescription = _sDescription;
-        vsKeywords = _vsKeywords;
-        sCategory = _sCategory;
-        sAccessUser = _sAccessUser;
+        m_sTitle = _sTitle;
+        m_sDescription = _sDescription;
+        m_vsKeywords = _vsKeywords;
+        m_sCategory = _sCategory;
+        m_sAccessUser = _sAccessUser;
     }
 };
 
-void MainWindow::CreateJson(const QString &path)
+void AddSaveNote::CreateJson(const QString &path)
 {
     QRegularExpression rx("(\\\n|\\:|\\;)");
     QString sKeywordsText = ui->KeywordsTEdit->toPlainText();
     QStringList myStringList = sKeywordsText.split(rx);
-    vector <QString> vsKeywords;
+    std::vector <QString> vsKeywords;
     QJsonObject keywords;
-    for(int i=0;i<myStringList.size();i++)
+    QString sRequestType = "Create a note";
+
+    for(int i = 0; i < myStringList.size(); ++i)
     {
        vsKeywords.push_back(myStringList[i].toUtf8().constData());
        keywords.insert( QString::number(i), myStringList[i].toUtf8().constData());
@@ -53,13 +54,14 @@ void MainWindow::CreateJson(const QString &path)
               ui->UserComBox->currentText());
 
     QJsonObject note;
-    note.insert( "title", obj.sTitle);
-    note.insert( "description", obj.sDescription);
+    note.insert( "title", obj.m_sTitle);
+    note.insert( "description", obj.m_sDescription);
     note.insert( "keywords", keywords);
-    note.insert( "category", obj.sCategory);
-    note.insert( "access user", obj.sAccessUser);
+    note.insert( "category", obj.m_sCategory);
+    note.insert( "access user", obj.m_sAccessUser);
 
     QJsonObject content;
+    content.insert( "Request type", sRequestType);
     content.insert( "Note", note);
 
     QJsonDocument document;
@@ -74,12 +76,12 @@ void MainWindow::CreateJson(const QString &path)
     }
     else
     {
-        cout << "file open failed: " << path.toStdString() << endl;
+        std::cout << "file open failed: " << path.toStdString() << std::endl;
     }
 }
 
 
-void ReadJson(const QString &path)
+bool ReadJson(const QString &path)
 {
     QFile file( path );
     if( file.open( QIODevice::ReadOnly ) )
@@ -91,8 +93,8 @@ void ReadJson(const QString &path)
         QJsonDocument document = QJsonDocument::fromJson( bytes, &jsonError );
         if( jsonError.error != QJsonParseError::NoError )
         {
-            cout << "fromJson failed: " << jsonError.errorString().toStdString() << endl;
-            return ;
+           std:: cout << "fromJson failed: " << jsonError.errorString().toStdString() << std::endl;
+            return false;
         }
         if( document.isObject() )
         {
@@ -117,7 +119,7 @@ void ReadJson(const QString &path)
 }
 
 
-void MainWindow::on_SaveNoteButton_clicked()
+void AddSaveNote::on_SaveNoteButton_clicked()
 {
     ui->ExplanationLabel->clear();
     if(ui->TitleLEdit->text()=="")
@@ -136,8 +138,9 @@ void MainWindow::on_SaveNoteButton_clicked()
     {
         ui->ExplanationLabel->setText(ui->ExplanationLabel->text() + "select category");
     }
-    else{
-        QString path = "D:/Notes Keeper/test.json";
+    else
+    {
+        QString path = "test.json";
         CreateJson( path );
         ReadJson( path );
     }
