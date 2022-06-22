@@ -11,131 +11,135 @@ public:
 	//return codes: ( 1) - success; 
 	//				( 0) - invalid login/password;
 	//				(-1) - unexpected error
-	static int AddUser(std::string sLogin, std::string sPassword);
+	static const int AddUser(const std::string &sLogin, 
+							 const std::string &sPassword);
 	
 	//return codes: (>0) - id; 
 	//				( 0) - no such user; 
 	//				(-1) - fault
-	static int GetUserId(std::string sLogin, std::string sPassword);
+	static const int GetUserId(const std::string &sLogin, 
+							   const std::string &sPassword);
 	
 	//return codes: ( 0) - no such user; 
 	//				(-1) - unexpected error; 
     //				( 1) - Friends Ids;
-	static int GetFriendList(int iId, std::vector <std::string> FriendList);
+	static const int GetFriendList(const int iId, 
+								   std::vector <std::string> &FriendList);
 	
 	//return codes: ( 1) - success;
 	//				( 0) - no such user; 
 	//				(-1) - no such friend;
 	//				(-2) - unexpected error;
-	static int AddFriend(int iUserId, int iFriendId);
+	static const int AddFriend(const int iUserId, const int iFriendId);
 	
 	//return codes: ( 1) - success;
 	//				( 0) - no such user; 
 	//				(-1) - no such friend;
 	//				(-2) - unexpected error;
-	static int DeleteFriend(int iUserId, int iFriendId);
+	static const int DeleteFriend(const int iUserId, const int iFriendId);
 	
 	//return codes: ( 1) - success;
 	//				( 0) - no such user; 
 	//				(-1) - unexpected error; 
-	static int GetFriendRequestsList(int iId, 
-									 std::vector<std::string> *vsFrReqList);
+	static const int GetFriendRequestsList(const int iId,
+										   std::vector<std::string> &vsFrReqList);
 	
-	//return codes: ("1" ) - success;
-	//				("0" ) - no such user; 
-	//				("-1") - no such friend;
-	//				("-2") - unexpected error;
-	static int AddFriendRequest(int iUserId, int iFrReqId);
+	//return codes: ( 1) - success;
+	//				( 0) - no such user; 
+	//				(-1) - no such friend;
+	//				(-2) - unexpected error;
+	static const int AddFriendRequest(const int iUserId, const int iFrReqId);
 	
-	//return codes: ("1" ) - success;
-	//				("0" ) - no such user; 
-	//				("-1") - no such request;
-	//				("-2") - unexpected error;
-	static int DeleteFriendRequest(int iUserId, int iFrReqId);
+	//return codes: ( 1) - success;
+	//				( 0) - no such user; 
+	//				(-1) - no such request;
+	//				(-2) - unexpected error;
+	static const int DeleteFriendRequest(const int iUserId, const int iFrReqId);
 //------------------------------------------------------------------------------
 //						CATEGORY
 //------------------------------------------------------------------------------
 	//return codes: (>0) - category id;
-	//				(0) - invalid User Id;
+	//				( 0) - invalid User Id;
 	//				(-1) - invalid Category Name;
 	//				(-2) - unexpected error;
-	static int CreateCategory(int iUserId, std::string sCategoryName);
+	static const int CreateCategory(const int iUserId, 
+									const std::string &sCategoryName);
 
-	//return codes: (1) - success;
-	//				(0) - invalid Category Id;
+	//return codes: ( 1) - success;
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid User Id;
 	//				(-2) - unexpected error;
-	static int GetCategory(int iCategoryId, 
-						   int iUserId, 
-						   std::vector<std::string>* vsCategory);
+	static const int GetCategory(const int iCategoryId,
+								 const int iUserId,
+								 std::vector<std::string> &vsCategory);
 
-	//return codes: (1) - success;
-	//				(0) - invalid Category Id;
+	//return codes: ( 1) - success;
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid User Id;
 	//				(-2) - unexpected error;
-	static int DeleteCategory(int iCategoryId, int iUserId);
+	static const int DeleteCategory(const int iCategoryId, const int iUserId);
 
-	//return codes: (1) - success;
-	//				(0) - invalid Category Id;
+	//return codes: ( 1) - success;
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid User Id;
 	//				(-2) - invalid Category Name;
 	//				(-3) - unexpected error;
-	static int ChangeCategoryName(int iCategoryId, 
-								  int iUserId, 
-								  std::string sCategoryName);
+	static const int ChangeCategoryName(const int iCategoryId,
+										const int iUserId,
+										const std::string &sCategoryName);
 //------------------------------------------------------------------------------ 
 //						NOTE
 //------------------------------------------------------------------------------
 	//return codes: (>0) - note id; 
-	//				(0) - invalid Category Id;
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid Key Words;
 	//				(-2) - unexpected error;
-	static int AddNote(int iCategoryId, std::string sKeyWords);
+	static const int AddNote(const int iCategoryId, const std::string &sKeyWords);
 
-	//return codes: (1) - success;
+	//return codes: ( 1) - success;
 	//				( 0) - invalid Note Id;
 	//				(-1) - invalid User Id;
 	//				(-2) - unexpected error;
-	static int GetNote(int iNoteId, 
-					   int iUserId, 
-					   std::vector<std::string>* vsNote);
+	static const int GetNote(const int iNoteId,
+							 const int iUserId,
+							 std::vector<std::string> &vsNote);
 
-	//return codes: (1) - success;
+	//return codes: ( 1) - success;
 	//				( 0) - invalid Note Id;
 	//				(-1) - invalid Category Id;
 	//				(-2) - invalid User Id;
 	//				(-3) - unexpected error;
-	static int ChangeCategoryId(int iNoteId, int iCategoryId, int iUserId);
+	static const int ChangeCategoryId(const int iNoteId, const int iCategoryId, const int iUserId);
 
-	//return codes: (1) - success; 
-	//				(0) - invalid Category Id;
+	//return codes: ( 1) - success; 
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid Header;
 	//				(-2) - unexpected error;
-	static int SetHeader(int iCategoryId, std::string sHeader);
+	static const int SetHeader(const int iCategoryId, const std::string &sHeader);
 
-	//return codes: (1) - success; 
-	//				(0) - invalid Category Id;
+	//return codes: ( 1) - success; 
+	//				( 0) - invalid Category Id;
 	//				(-1) - invalid Text;
 	//				(-2) - unexpected error;
-	static int SetText(int iCategoryId, std::string sText);
+	static const int SetText(const int iCategoryId, const std::string &sText);
 
-	//return codes: ("1" ) - success;
-	//				("0" ) - no such Note; 
-	//				("-1") - no such friend;
-	//				("-2") - unexpected error;
-	static int AddFriendAccess(int iNoteId, int iFriendId);
+	//return codes: ( 1) - success;
+	//				( 0) - no such Note; 
+	//				(-1) - no such friend;
+	//				(-2) - unexpected error;
+	static const int AddFriendAccess(const int iNoteId, const int iFriendId);
 
-	//return codes: ("1" ) - success;
-	//				("0" ) - access denied; 
-	//				("-1") - no such friend;
-	//				("-2") - unexpected error;
-	static int CheckFriendAccess(int iNoteId, int iFriendId);
+	//return codes: ( 1) - success;
+	//				( 0) - access denied; 
+	//				(-1) - no such friend;
+	//				(-2) - unexpected error;
+	static const int CheckFriendAccess(const int iNoteId, const int iFriendId);
 
-	//return codes: ("1" ) - success;
-	//				("0" ) - no such Note; 
-	//				("-1") - no such friend;
-	//				("-2") - unexpected error;
-	static int DeleteFriendAccess(int iNoteId, int iFriendId);
+	//return codes: ( 1) - success;
+	//				( 0) - no such Note; 
+	//				(-1) - no such friend;
+	//				(-2) - unexpected error;
+	static const int DeleteFriendAccess(const int iNoteId, const int iFriendId);
 };
 
 #endif

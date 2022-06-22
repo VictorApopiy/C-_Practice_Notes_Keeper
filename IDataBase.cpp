@@ -1,110 +1,115 @@
 #include "IDataBase.h"
 #include <string>
 
-int IDataBase::AddUser(std::string sLogin, std::string sPassword) {
-	int i = std::stoi(sLogin);
-	return i;
-}
-
-int IDataBase::GetUserId(std::string sLogin, std::string sPassword)
+const int IDataBase::AddUser(const std::string &sLogin, 
+							 const std::string &sPassword)
 {
-	int i = stoi(sLogin);
-	return i;
+	return std::stoi(sLogin);
 }
 
-int IDataBase::GetFriendList(int iId, std::vector <std::string> FriendList)
+const int IDataBase::GetUserId(const std::string &sLogin, 
+							   const std::string &sPassword)
 {
-	return iId;
+	return std::stoi(sLogin);
 }
 
-int IDataBase::AddFriend(int iUserId, int iFriendId)
-{
-	return iUserId;
-}
-
-int IDataBase::DeleteFriend(int iUserId, int iFriendId)
-{
-	return iUserId;
-}
-
-int IDataBase::GetFriendRequestsList(int iId,
-								     std::vector<std::string>* vsFrReqList)
+const int IDataBase::GetFriendList(const int iId, 
+								   std::vector <std::string> &FriendList)
 {
 	return iId;
 }
 
-int IDataBase::AddFriendRequest(int iUserId, int iFrReqId)
+const int IDataBase::AddFriend(const int iUserId, const int iFriendId)
 {
 	return iUserId;
 }
 
-int IDataBase::DeleteFriendRequest(int iUserId, int iFrReqId)
+const int IDataBase::DeleteFriend(const int iUserId, const int iFriendId)
 {
 	return iUserId;
 }
 
-int IDataBase::CreateCategory(int iUserId, std::string sCategoryName)
+const int IDataBase::GetFriendRequestsList(const int iId,
+										   std::vector<std::string> &vsFrReqList)
+{
+	return iId;
+}
+
+const int IDataBase::AddFriendRequest(const int iUserId, const int iFrReqId)
 {
 	return iUserId;
 }
 
-int IDataBase::GetCategory(int iCategoryId, 
-						   int iUserId, 
-						   std::vector<std::string>* vsCategory)
+const int IDataBase::DeleteFriendRequest(const int iUserId, const int iFrReqId)
+{
+	return iUserId;
+}
+
+const int IDataBase::CreateCategory(const int iUserId, 
+								    const std::string &sCategoryName)
+{
+	return iUserId;
+}
+
+const int IDataBase::GetCategory(const int iCategoryId,
+								 const int iUserId,
+								 std::vector<std::string> &vsCategory)
 {
 	return iCategoryId;
 }
 
-int IDataBase::DeleteCategory(int iCategoryId, int iUserId)
+const int IDataBase::DeleteCategory(const int iCategoryId, const int iUserId)
 {
 	return iCategoryId;
 }
 
-int IDataBase::ChangeCategoryName(int    iCategoryId,
-								  int    iUserId, 
-								  std::string sCategoryName)
+const int IDataBase::ChangeCategoryName(const int    iCategoryId,
+									    const int    iUserId,
+										const std::string &sCategoryName)
 {
 	return iCategoryId;
 }
 
-int IDataBase::AddNote(int iCategoryId, std::string sKeyWords)
+const int IDataBase::AddNote(int iCategoryId, const std::string &sKeyWords)
 {
 	return iCategoryId;
 }
 
-int IDataBase::GetNote(int iNoteId, 
-					   int iUserId, 
-					   std::vector<std::string>* vsNote)
+const int IDataBase::GetNote(const int iNoteId,
+							 const int iUserId,
+					    	 std::vector<std::string> &vsNote)
 {
 	return iNoteId;
 }
 
-int IDataBase::ChangeCategoryId(int iNoteId, int iCategoryId, int iUserId)
+const int IDataBase::ChangeCategoryId(const int iNoteId, 
+									  const int iCategoryId, 
+									  const int iUserId)
 {
 	return iNoteId;
 }
 
-int IDataBase::SetHeader(int iCategoryId, std::string sHeader)
+const int IDataBase::SetHeader(const int iCategoryId, const std::string &sHeader)
 {
 	return iCategoryId;
 }
 
-int IDataBase::SetText(int iCategoryId, std::string sText)
+const int IDataBase::SetText(const int iCategoryId, const std::string &sText)
 {
 	return iCategoryId;
 }
 
-int IDataBase::AddFriendAccess(int iNoteId, int iFriendId)
+const int IDataBase::AddFriendAccess(const int iNoteId, const int iFriendId)
 {
 	return iNoteId;
 }
 
-int IDataBase::CheckFriendAccess(int iNoteId, int iFriendId)
+const int IDataBase::CheckFriendAccess(const int iNoteId, const int iFriendId)
 {
 	return iNoteId;
 }
 
-int IDataBase::DeleteFriendAccess(int iNoteId, int iFriendId)
+const int IDataBase::DeleteFriendAccess(const int iNoteId, const int iFriendId)
 {
 	return iNoteId;
 }
