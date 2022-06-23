@@ -1,4 +1,5 @@
 #include "IDataBase.h"
+#include "DBErrors.h"
 #include <string>
 
 const int IDataBase::AddUser(const std::string &sLogin, 
@@ -7,7 +8,7 @@ const int IDataBase::AddUser(const std::string &sLogin,
 	return std::stoi(sLogin);
 }
 
-const int IDataBase::GetUserId(const std::string &sLogin, 
+const int IDataBase::GetUserId(int& iUserId, const std::string &sLogin,
 							   const std::string &sPassword)
 {
 	return std::stoi(sLogin);
@@ -45,7 +46,7 @@ const int IDataBase::DeleteFriendRequest(const int iUserId, const int iFrReqId)
 	return iUserId;
 }
 
-const int IDataBase::CreateCategory(const int iUserId, 
+const int IDataBase::CreateCategory(int& iCategoryId, const int iUserId,
 								    const std::string &sCategoryName)
 {
 	return iUserId;
@@ -70,7 +71,7 @@ const int IDataBase::ChangeCategoryName(const int    iCategoryId,
 	return iCategoryId;
 }
 
-const int IDataBase::AddNote(int iCategoryId, const std::string &sKeyWords)
+const int IDataBase::AddNote(int& iNoteId, int iCategoryId, const std::string &sKeyWords)
 {
 	return iCategoryId;
 }
@@ -89,14 +90,14 @@ const int IDataBase::ChangeCategoryId(const int iNoteId,
 	return iNoteId;
 }
 
-const int IDataBase::SetHeader(const int iCategoryId, const std::string &sHeader)
+const int IDataBase::SetHeader(const int iNoteId, const std::string &sHeader)
 {
-	return iCategoryId;
+	return iNoteId;
 }
 
-const int IDataBase::SetText(const int iCategoryId, const std::string &sText)
+const int IDataBase::SetText(const int iNoteId, const std::string &sText)
 {
-	return iCategoryId;
+	return iNoteId;
 }
 
 const int IDataBase::AddFriendAccess(const int iNoteId, const int iFriendId)
