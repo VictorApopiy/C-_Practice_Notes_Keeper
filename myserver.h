@@ -1,0 +1,1 @@
+    void incomingConnection(qintptr pisocketDescriptor);
