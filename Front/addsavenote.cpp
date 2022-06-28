@@ -1,5 +1,6 @@
 #include "addsavenote.h"
 #include "ui_addsavenote.h"
+#include "category.h"
 
 
 AddSaveNote::AddSaveNote(QWidget *parent)
@@ -7,7 +8,7 @@ AddSaveNote::AddSaveNote(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->KeywordsTEdit->setPlaceholderText(QString("Record format: Keyword1;Keyword2;Keyword3"));
+    ui->ASNKeywordsTEdit->setPlaceholderText(QString("Record format: Keyword1;Keyword2;Keyword3"));
 }
 
 AddSaveNote::~AddSaveNote()
@@ -37,7 +38,7 @@ struct Note
 void AddSaveNote::CreateJson(const QString &path)
 {
     QRegularExpression rx("(\\\n|\\:|\\;)");
-    QString sKeywordsText = ui->KeywordsTEdit->toPlainText();
+    QString sKeywordsText = ui->ASNKeywordsTEdit->toPlainText();
     QStringList myStringList = sKeywordsText.split(rx);
     std::vector <QString> vsKeywords;
     QJsonObject keywords;
@@ -49,9 +50,9 @@ void AddSaveNote::CreateJson(const QString &path)
        keywords.insert( QString::number(i), myStringList[i].toUtf8().constData());
     }
 
-    Note obj( ui->TitleLEdit->text(), ui->DescriptionTEdit->toPlainText(),
-              vsKeywords, ui->CategoryComBox->currentText(),
-              ui->UserComBox->currentText());
+    Note obj( ui->ASNTitleLEdit->text(), ui->ASNDescriptionTEdit->toPlainText(),
+              vsKeywords, ui->ASNCategoryComBox->currentText(),
+              ui->ASNUserComBox->currentText());
 
     QJsonObject note;
     note.insert( "title", obj.m_sTitle);
@@ -119,22 +120,22 @@ bool ReadJson(const QString &path)
 }
 
 
-void AddSaveNote::on_SaveNoteButton_clicked()
+void AddSaveNote::on_ASNSaveNoteButton_clicked()
 {
     ui->ExplanationLabel->clear();
-    if(ui->TitleLEdit->text()=="")
+    if(ui->ASNTitleLEdit->text()=="")
     {
         ui->ExplanationLabel->setText(ui->ExplanationLabel->text() + "write title");
     }
-    else if(ui->DescriptionTEdit->document()->isEmpty())
+    else if(ui->ASNDescriptionTEdit->document()->isEmpty())
     {
         ui->ExplanationLabel->setText(ui->ExplanationLabel->text() + "write description");
     }
-    else if(ui->KeywordsTEdit->document()->isEmpty())
+    else if(ui->ASNKeywordsTEdit->document()->isEmpty())
     {
         ui->ExplanationLabel->setText(ui->ExplanationLabel->text() + "write keywords");
     }
-    else if(ui->CategoryComBox->currentText()=="Select category")
+    else if(ui->ASNCategoryComBox->currentText()=="Select category")
     {
         ui->ExplanationLabel->setText(ui->ExplanationLabel->text() + "select category");
     }
@@ -145,5 +146,21 @@ void AddSaveNote::on_SaveNoteButton_clicked()
         ReadJson( path );
     }
 
+}
+
+
+void AddSaveNote::on_ASNCanselButton_clicked()
+{
+    Category* w = new Category();
+    w->show();
+    close();
+}
+
+
+void AddSaveNote::on_ASNHomeButton_clicked()
+{
+    Category* w = new Category();
+    w->show();
+    close();
 }
 
