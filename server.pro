@@ -22,5 +22,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     DBErrors.h \
+    DBErrors.h \
     IDataBase.h \
     myserver.h
