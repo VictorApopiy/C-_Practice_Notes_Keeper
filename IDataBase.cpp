@@ -12,6 +12,7 @@ const int IDataBase::AddUser(const std::string &sLogin,
 const int IDataBase::GetUserId(const std::string &sLogin,
              const std::string &sPassword,
              int& iUserId)
+
 {
 	return std::stoi(sLogin);
 }
@@ -73,6 +74,7 @@ const int IDataBase::ChangeCategoryName(const int    iCategoryId,
 {
 	return iCategoryId;
 }
+
 
 const int IDataBase::AddNote(const int iCategoryId, const std::string &sKeyWords, int &iNoteId)
 {
