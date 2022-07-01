@@ -2,9 +2,6 @@
 #include "IDataBase.cpp"
 #include "IDataBase.h"
 #include "DBErrors.h"
-#include <iostream>
-#include <vector>
-#include <string>
 
 CMyServer::CMyServer(){}
 
@@ -35,6 +32,9 @@ void CMyServer::incomingConnection(qintptr pisocketDescriptor){
 void CMyServer::sockReady(){
     Data = socket->readAll();
     qDebug()<<"Data: "<<Data;
+    parseJson(Data);
+}
+void CMyServer::parseJson(QByteArray &Data){
     std::vector <std::string> msg;
 
     nlohmann::json j;
@@ -43,74 +43,72 @@ void CMyServer::sockReady(){
     for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
             msg.push_back(it.value());
     }
-
-        if(msg.at(0)=="AddUser"){
-            CMyServer::m_AddUser(msg);
-        }
-        else if(msg.at(0)=="GetUserId"){
-            CMyServer::m_GetUserId(msg);
-        }
-        else if(msg.at(0)=="GetFriendList"){
-            CMyServer::m_GetFriendList(msg);
-        }
-        else if(msg.at(0)=="AddFriend"){
-            CMyServer::m_AddFriend(msg);
-        }
-        else if(msg.at(0)=="DeleteFriend"){
-            CMyServer::m_DeleteFriend(msg);
-        }
-        else if(msg.at(0)=="GetFriendRequestsList"){
-            CMyServer::m_GetFriendRequestsList(msg);
-        }
-        else if(msg.at(0)=="AddFriendRequest"){
-            CMyServer::m_AddFriendRequest(msg);
-        }
-        else if(msg.at(0)=="DeleteFriendRequest"){
-            CMyServer::m_DeleteFriendRequest(msg);
-        }
-        else if(msg.at(0)=="CreateCategory"){
-            CMyServer::m_CreateCategory(msg);
-        }
-        else if(msg.at(0)=="GetCategory"){
-            CMyServer::m_GetCategory(msg);
-        }
-        else if(msg.at(0)=="DeleteCategory"){
-            CMyServer::m_DeleteCategory(msg);
-        }
-        else if(msg.at(0)=="ChangeCategoryName"){
-            CMyServer::m_ChangeCategoryName(msg);
-        }
-        else if(msg.at(0)=="AddNote"){
-            CMyServer::m_AddNote(msg);
-        }
-        else if(msg.at(0)=="GetNote"){
-            CMyServer::m_GetNote(msg);
-        }
-        else if(msg.at(0)=="ChangeCategoryId"){
-            CMyServer::m_ChangeCategoryId(msg);
-        }
-        else if(msg.at(0)=="SetHeader"){
-            CMyServer::m_SetHeader(msg);
-        }
-        else if(msg.at(0)=="SetText"){
-            CMyServer::m_SetText(msg);
-        }
-        else if(msg.at(0)=="AddFriendAccess"){
-            CMyServer::m_AddFriendAccess(msg);
-        }
-        else if(msg.at(0)=="CheckFriendAccess"){
-            CMyServer::m_CheckFriendAccess(msg);
-        }
-        else if(msg.at(0)=="DeleteFriendAccess"){
-            CMyServer::m_DeleteFriendAccess(msg);
-        }
-        else{
-            bytes = "Unclear command";
-            CMyServer::m_socketWrite(bytes);
-         }
+    if(msg.at(0)=="AddUser"){
+            AddUser(msg);
+    }
+    else if(msg.at(0)=="GetUserId"){
+            GetUserId(msg);
+    }
+    else if(msg.at(0)=="GetFriendList"){
+            GetFriendList(msg);
+    }
+    else if(msg.at(0)=="AddFriend"){
+            AddFriend(msg);
+    }
+    else if(msg.at(0)=="DeleteFriend"){
+            DeleteFriend(msg);
+    }
+    else if(msg.at(0)=="GetFriendRequestsList"){
+            GetFriendRequestsList(msg);
+    }
+    else if(msg.at(0)=="AddFriendRequest"){
+            AddFriendRequest(msg);
+    }
+    else if(msg.at(0)=="DeleteFriendRequest"){
+            DeleteFriendRequest(msg);
+    }
+    else if(msg.at(0)=="CreateCategory"){
+            CreateCategory(msg);
+    }
+    else if(msg.at(0)=="GetCategory"){
+            GetCategory(msg);
+    }
+    else if(msg.at(0)=="DeleteCategory"){
+            DeleteCategory(msg);
+    }
+    else if(msg.at(0)=="ChangeCategoryName"){
+            ChangeCategoryName(msg);
+    }
+    else if(msg.at(0)=="AddNote"){
+            AddNote(msg);
+    }
+    else if(msg.at(0)=="GetNote"){
+            GetNote(msg);
+    }
+    else if(msg.at(0)=="ChangeCategoryId"){
+            ChangeCategoryId(msg);
+    }
+    else if(msg.at(0)=="SetHeader"){
+            SetHeader(msg);
+    }
+    else if(msg.at(0)=="SetText"){
+            SetText(msg);
+    }
+    else if(msg.at(0)=="AddFriendAccess"){
+            AddFriendAccess(msg);
+    }
+    else if(msg.at(0)=="CheckFriendAccess"){
+            CheckFriendAccess(msg);
+    }
+    else if(msg.at(0)=="DeleteFriendAccess"){
+            DeleteFriendAccess(msg);
+    }
+    else{
+            socketWrite("Unclear command");
+    }
 }
-void CMyServer::m_AddUser(std::vector <std::string> &msg){
-    int iRtCode = IDataBase::AddUser(msg[1], msg[2], iUserId);
+void CMyServer::AddUser(const std::vector <std::string> &msg){
+    int iRtCode = IDataBase::AddUser(msg.at(1), msg.at(2), iUserId);
     QJsonObject AddUser;
     switch(iRtCode){
     case SUCCESS:
@@ -118,20 +116,18 @@ void CMyServer::m_AddUser(std::vector <std::string> &msg){
         AddUser.insert("SUCCESS", iUserId);
         document.setObject(AddUser);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_GetUserId(std::vector <std::string> &msg){
-    int iRtCode = IDataBase::GetUserId(msg[1], msg[2], iUserId);
+void CMyServer::GetUserId(const std::vector <std::string> &msg){
+    int iRtCode = IDataBase::GetUserId(msg.at(1), msg.at(2), iUserId);
     QJsonObject GetUserId;
     switch(iRtCode){
     case SUCCESS:
@@ -139,168 +135,146 @@ void CMyServer::m_GetUserId(std::vector <std::string> &msg){
         GetUserId.insert("SUCCESS", iUserId);
         document.setObject(GetUserId);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_GetFriendList(std::vector <std::string> &msg){
+void CMyServer::GetFriendList(const std::vector <std::string> &msg){
     std::vector <std::string> FriendList;
     int iRtCode = IDataBase::GetFriendList(iId, FriendList);
     QJsonObject GetFriendList;
-    std::string rList = "";
+    std::string sList;
 
     switch(iRtCode){
     case SUCCESS:
         for(int i = 0; i <= FriendList.size(); i++){
-             rList += FriendList[i] + '|';
+             sList += FriendList[i] + '|';
         }
         GetFriendList.insert("RequestType", "GetFriendList");
-        GetFriendList.insert("SUCCESS", rList.data());
+        GetFriendList.insert("SUCCESS", sList.data());
         document.setObject(GetFriendList);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_AddFriend(std::vector <std::string> &msg){
-    iUserId = std::stoi(msg[1]);
-    iFriendId = std::stoi(msg[2]);
+void CMyServer::AddFriend(const std::vector <std::string> &msg){
+    iUserId = std::stoi(msg.at(1));
+    iFriendId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::AddFriend(iUserId, iFriendId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_DeleteFriend(std::vector <std::string> &msg){
-    iUserId = std::stoi(msg[1]);
-    iFriendId = std::stoi(msg[2]);
+void CMyServer::DeleteFriend(const std::vector <std::string> &msg){
+    iUserId = std::stoi(msg.at(1));
+    iFriendId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::DeleteFriend(iUserId, iFriendId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_GetFriendRequestsList(std::vector <std::string> &msg){
+void CMyServer::GetFriendRequestsList(const std::vector <std::string> &msg){
     std::vector<std::string> vsFrReqList;
     int iRtCode = IDataBase::GetFriendRequestsList(iId, vsFrReqList);
     QJsonObject GetFriendRequestsList;
-    std::string rqList = "";
+    std::string sRqList;
     switch(iRtCode){
     case SUCCESS:
         for(int i = 0; i <= vsFrReqList.size(); i++){
-             rqList += vsFrReqList[i] + '|';
+             sRqList += vsFrReqList[i] + '|';
         }
         GetFriendRequestsList.insert("RequestType", "GetFriendRequestsList");
-        GetFriendRequestsList.insert("SUCCESS", rqList.data());
+        GetFriendRequestsList.insert("SUCCESS", sRqList.data());
         document.setObject(GetFriendRequestsList);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_AddFriendRequest(std::vector <std::string> &msg){
-    iUserId = std::stoi(msg[1]);
-    iFrReqId = std::stoi(msg[2]);
+void CMyServer::AddFriendRequest(const std::vector <std::string> &msg){
+    iUserId = std::stoi(msg.at(1));
+    iFrReqId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::AddFriendRequest(iUserId, iFrReqId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_DeleteFriendRequest(std::vector <std::string> &msg){
-    iUserId = std::stoi(msg[1]);
-    iFrReqId = std::stoi(msg[2]);
+void CMyServer::DeleteFriendRequest(const std::vector <std::string> &msg){
+    iUserId = std::stoi(msg.at(1));
+    iFrReqId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::DeleteFriendRequest(iUserId, iFrReqId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_REQUEST:
-        bytes = "NO_SUCH_REQUEST";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_REQUEST");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_CreateCategory(std::vector <std::string> &msg){
+void CMyServer::CreateCategory(const std::vector <std::string> &msg){
     std::string sCategoryName;
-    iCategoryId = std::stoi(msg[1]);
-    iUserId = std::stoi(msg[2]);
-    sCategoryName = msg[3];
+    iCategoryId = std::stoi(msg.at(1));
+    iUserId = std::stoi(msg.at(2));
+    sCategoryName = msg.at(3);
     int iRtCode = IDataBase::CreateCategory(iUserId, sCategoryName, iCategoryId);
     QJsonObject CreateCategory;
     switch(iRtCode){
@@ -309,109 +283,94 @@ void CMyServer::m_CreateCategory(std::vector <std::string> &msg){
         CreateCategory.insert("SUCCESS", iCategoryId);
         document.setObject(CreateCategory);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_GetCategory(std::vector <std::string> &msg){
+void CMyServer::GetCategory(const std::vector <std::string> &msg){
     std::vector<std::string> vsCategory;
     int iRtCode = IDataBase::GetCategory(iCategoryId, iUserId, vsCategory);
     QJsonObject GetCategory;
-    std::string gCategory = "";
+    std::string sGCategory;
     switch(iRtCode){
     case SUCCESS:
         for(int i = 0; i <= vsCategory.size(); i++){
-             gCategory += vsCategory[i] + '|';
+             sGCategory += vsCategory[i] + '|';
         }
         GetCategory.insert("RequestType", "GetCategory");
-        GetCategory.insert("SUCCESS", gCategory.data());
+        GetCategory.insert("SUCCESS", sGCategory.data());
         document.setObject(GetCategory);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_CATEGORY:
-        bytes = "NO_SUCH_CATEGORY";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_CATEGORY");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_DeleteCategory(std::vector <std::string> &msg){
-    iCategoryId = std::stoi(msg[1]);
-    iUserId = std::stoi(msg[2]);
+void CMyServer::DeleteCategory(const std::vector <std::string> &msg){
+    iCategoryId = std::stoi(msg.at(1));
+    iUserId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::DeleteCategory(iCategoryId, iUserId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_CATEGORY:
-        bytes = "NO_SUCH_CATEGORY";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_CATEGORY");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_ChangeCategoryName(std::vector <std::string> &msg){
+void CMyServer::ChangeCategoryName(const std::vector <std::string> &msg){
     std::string sCategoryName;
-    iCategoryId = std::stoi(msg[1]);
-    iUserId = std::stoi(msg[2]);
-    sCategoryName = msg[3];
+    iCategoryId = std::stoi(msg.at(1));
+    iUserId = std::stoi(msg.at(2));
+    sCategoryName = msg.at(3);
     int iRtCode = IDataBase::ChangeCategoryName(iCategoryId, iUserId, sCategoryName);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_CATEGORY:
-        bytes = "NO_SUCH_CATEGORY";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_CATEGORY");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     }
 }
-void CMyServer::m_AddNote(std::vector <std::string> &msg){
+void CMyServer::AddNote(const std::vector <std::string> &msg){
     std::string sKeyWords;
-    iNoteId = std::stoi(msg[1]);
-    iCategoryId = std::stoi(msg[2]);
-    sKeyWords = msg[3];
+    iNoteId = std::stoi(msg.at(1));
+    iCategoryId = std::stoi(msg.at(2));
+    sKeyWords = msg.at(3);
     int iRtCode = IDataBase::AddNote(iCategoryId, sKeyWords, iNoteId);
     QJsonObject AddNote;
     switch(iRtCode){
@@ -420,202 +379,170 @@ void CMyServer::m_AddNote(std::vector <std::string> &msg){
         AddNote.insert("SUCCESS", iNoteId);
         document.setObject(AddNote);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     case NO_SUCH_CATEGORY:
-        bytes = "NO_SUCH_CATEGORY";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_CATEGORY");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_GetNote(std::vector <std::string> &msg){
+void CMyServer::GetNote(const std::vector <std::string> &msg){
     std::vector<std::string> vsNote;
     int iRtCode = IDataBase::GetNote(iNoteId, iUserId, vsNote);
     QJsonObject GetNote;
-    std::string gNote = "";
+    std::string sGNote;
     switch(iRtCode){
     case SUCCESS:
         for(int i = 0; i <= vsNote.size(); i++){
-             gNote += vsNote[i] + '|';
+             sGNote += vsNote[i] + '|';
         }
         GetNote.insert("RequestType", "GetNote");
-        GetNote.insert("SUCCESS", gNote.data());
+        GetNote.insert("SUCCESS", sGNote.data());
         document.setObject(GetNote);
         bytes = document.toJson( QJsonDocument::Indented );
-        CMyServer::m_socketWrite(bytes);
+        socketWrite(bytes);
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_ChangeCategoryId(std::vector <std::string> &msg){
-    iNoteId = std::stoi(msg[1]);
-    iCategoryId = std::stoi(msg[2]);
-    iUserId = std::stoi(msg[3]);
+void CMyServer::ChangeCategoryId(const std::vector <std::string> &msg){
+    iNoteId = std::stoi(msg.at(1));
+    iCategoryId = std::stoi(msg.at(2));
+    iUserId = std::stoi(msg.at(3));
     int iRtCode = IDataBase::ChangeCategoryId(iNoteId, iCategoryId, iUserId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_USER:
-        bytes = "NO_SUCH_USER";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_USER");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case NO_SUCH_CATEGORY:
-        bytes = "NO_SUCH_CATEGORY";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_CATEGORY");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_SetHeader(std::vector <std::string> &msg){
+void CMyServer::SetHeader(const std::vector <std::string> &msg){
     std::string sHeader;
-    iNoteId = std::stoi(msg[1]);
-    sHeader = msg[2];
+    iNoteId = std::stoi(msg.at(1));
+    sHeader = msg.at(2);
     int iRtCode = IDataBase::SetHeader(iNoteId, sHeader);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_SetText(std::vector <std::string> &msg){
+void CMyServer::SetText(const std::vector <std::string> &msg){
     std::string sText;
-    iNoteId = std::stoi(msg[1]);
-    sText = msg[2];
+    iNoteId = std::stoi(msg.at(1));
+    sText = msg.at(2);
     int iRtCode = IDataBase::SetText(iNoteId, sText);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case INVALID_INPUT_DATA:
-        bytes = "INVALID_INPUT_DATA";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("INVALID_INPUT_DATA");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_AddFriendAccess(std::vector <std::string> &msg){
-    iNoteId = std::stoi(msg[1]);
-    iFriendId = std::stoi(msg[2]);
+void CMyServer::AddFriendAccess(const std::vector <std::string> &msg){
+    iNoteId = std::stoi(msg.at(1));
+    iFriendId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::AddFriendAccess(iNoteId, iFriendId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_CheckFriendAccess(std::vector <std::string> &msg){
-    iNoteId = std::stoi(msg[1]);
-    iFriendId = std::stoi(msg[2]);
+void CMyServer::CheckFriendAccess(const std::vector <std::string> &msg){
+    iNoteId = std::stoi(msg.at(1));
+    iFriendId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::CheckFriendAccess(iNoteId, iFriendId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case ACCESS_DENIED:
-        bytes = "ACCESS_DENIED";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("ACCESS_DENIED");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_DeleteFriendAccess(std::vector <std::string> &msg){
-    iNoteId = std::stoi(msg[1]);
-    iFriendId = std::stoi(msg[2]);
+void CMyServer::DeleteFriendAccess(const std::vector <std::string> &msg){
+    iNoteId = std::stoi(msg.at(1));
+    iFriendId = std::stoi(msg.at(2));
     int iRtCode = IDataBase::DeleteFriendAccess(iNoteId, iFriendId);
     switch(iRtCode){
     case SUCCESS:
-        bytes = "SUCCESS";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("SUCCESS");
         break;
     case NO_SUCH_FRIEND:
-        bytes = "NO_SUCH_FRIEND";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_FRIEND");
         break;
     case NO_SUCH_NOTE:
-        bytes = "NO_SUCH_NOTE";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("NO_SUCH_NOTE");
         break;
     case UNEXPECTED_ERROR:
-        bytes = "UNEXPECTED_ERROR";
-        CMyServer::m_socketWrite(bytes);
+        socketWrite("UNEXPECTED_ERROR");
         break;
     }
 }
-void CMyServer::m_socketWrite(QByteArray &bytes){
+void CMyServer::socketWrite(const QByteArray &bytes){
     socket->write(bytes);
     socket->waitForBytesWritten(TIME);
 }

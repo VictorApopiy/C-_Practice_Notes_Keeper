@@ -7,15 +7,10 @@
 #include <QJsonDocument>
 #include <QString>
 #include <QByteArray>
-#include <QtCore>
 #include <iostream>
-#include <QIODevice>
 #include <string>
 #include <vector>
-#include <memory.h>
-#include <QRegularExpression>
-#include <QStringConverter>
-#include "lib/json.hpp"
+#include "3rdparty/json.hpp"
 
 #define PORT 5555
 #define TIME 5000
@@ -34,6 +29,29 @@ private:
     QByteArray res;
     QJsonDocument document;
     QByteArray bytes;
+
+    void AddUser(const std::vector <std::string> &msg);
+    void GetUserId(const std::vector <std::string> &msg);
+    void GetFriendList(const std::vector <std::string> &msg);
+    void AddFriend(const std::vector <std::string> &msg);
+    void DeleteFriend(const std::vector <std::string> &msg);
+    void GetFriendRequestsList(const std::vector <std::string> &msg);
+    void AddFriendRequest(const std::vector <std::string> &msg);
+    void DeleteFriendRequest(const std::vector <std::string> &msg);
+    void CreateCategory(const std::vector <std::string> &msg);
+    void GetCategory(const std::vector <std::string> &msg);
+    void DeleteCategory(const std::vector <std::string> &msg);
+    void ChangeCategoryName(const std::vector <std::string> &msg);
+    void AddNote(const std::vector <std::string> &msg);
+    void GetNote(const std::vector <std::string> &msg);
+    void ChangeCategoryId(const std::vector <std::string> &msg);
+    void SetHeader(const std::vector <std::string> &msg);
+    void SetText(const std::vector <std::string> &msg);
+    void AddFriendAccess(const std::vector <std::string> &msg);
+    void CheckFriendAccess(const std::vector <std::string> &msg);
+    void DeleteFriendAccess(const std::vector <std::string> &msg);
+    void socketWrite(const QByteArray &bytes);
+    void parseJson(QByteArray &Data);
 public:
     CMyServer();
     ~CMyServer();
@@ -43,27 +61,6 @@ public slots:
     void incomingConnection(qintptr pisocketDescriptor);
     void sockReady();
     void sockDisc();
-    void m_AddUser(std::vector <std::string> &msg);
-    void m_GetUserId(std::vector <std::string> &msg);
-    void m_GetFriendList(std::vector <std::string> &msg);
-    void m_AddFriend(std::vector <std::string> &msg);
-    void m_DeleteFriend(std::vector <std::string> &msg);
-    void m_GetFriendRequestsList(std::vector <std::string> &msg);
-    void m_AddFriendRequest(std::vector <std::string> &msg);
-    void m_DeleteFriendRequest(std::vector <std::string> &msg);
-    void m_CreateCategory(std::vector <std::string> &msg);
-    void m_GetCategory(std::vector <std::string> &msg);
-    void m_DeleteCategory(std::vector <std::string> &msg);
-    void m_ChangeCategoryName(std::vector <std::string> &msg);
-    void m_AddNote(std::vector <std::string> &msg);
-    void m_GetNote(std::vector <std::string> &msg);
-    void m_ChangeCategoryId(std::vector <std::string> &msg);
-    void m_SetHeader(std::vector <std::string> &msg);
-    void m_SetText(std::vector <std::string> &msg);
-    void m_AddFriendAccess(std::vector <std::string> &msg);
-    void m_CheckFriendAccess(std::vector <std::string> &msg);
-    void m_DeleteFriendAccess(std::vector <std::string> &msg);
-    void m_socketWrite(QByteArray &bytes);
 };
 
 #endif // MYSERVER_H
