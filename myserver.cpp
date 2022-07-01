@@ -28,6 +28,7 @@ void CMyServer::incomingConnection(qintptr pisocketDescriptor){
 
     qDebug()<<pisocketDescriptor<<"Client connected";
 
+    socket->write("{\"type\":\"connect\",\"status\":\"yes\"}");
     qDebug()<<"Send client connect status - YES";
 }
 
@@ -109,7 +110,6 @@ void CMyServer::sockReady(){
          }
 }
 void CMyServer::m_AddUser(std::vector <std::string> &msg){
-    int iUserId;
     int iRtCode = IDataBase::AddUser(msg[1], msg[2], iUserId);
     QJsonObject AddUser;
     switch(iRtCode){
@@ -131,7 +131,6 @@ void CMyServer::m_AddUser(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_GetUserId(std::vector <std::string> &msg){
-    int iUserId;
     int iRtCode = IDataBase::GetUserId(msg[1], msg[2], iUserId);
     QJsonObject GetUserId;
     switch(iRtCode){
@@ -153,7 +152,6 @@ void CMyServer::m_GetUserId(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_GetFriendList(std::vector <std::string> &msg){
-    int iId;
     std::vector <std::string> FriendList;
     int iRtCode = IDataBase::GetFriendList(iId, FriendList);
     QJsonObject GetFriendList;
@@ -181,8 +179,6 @@ void CMyServer::m_GetFriendList(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_AddFriend(std::vector <std::string> &msg){
-    int iUserId;
-    int iFriendId;
     iUserId = std::stoi(msg[1]);
     iFriendId = std::stoi(msg[2]);
     int iRtCode = IDataBase::AddFriend(iUserId, iFriendId);
@@ -206,8 +202,6 @@ void CMyServer::m_AddFriend(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_DeleteFriend(std::vector <std::string> &msg){
-    int iUserId;
-    int iFriendId;
     iUserId = std::stoi(msg[1]);
     iFriendId = std::stoi(msg[2]);
     int iRtCode = IDataBase::DeleteFriend(iUserId, iFriendId);
@@ -231,7 +225,6 @@ void CMyServer::m_DeleteFriend(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_GetFriendRequestsList(std::vector <std::string> &msg){
-    int iId;
     std::vector<std::string> vsFrReqList;
     int iRtCode = IDataBase::GetFriendRequestsList(iId, vsFrReqList);
     QJsonObject GetFriendRequestsList;
@@ -258,8 +251,6 @@ void CMyServer::m_GetFriendRequestsList(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_AddFriendRequest(std::vector <std::string> &msg){
-    int iUserId;
-    int iFrReqId;
     iUserId = std::stoi(msg[1]);
     iFrReqId = std::stoi(msg[2]);
     int iRtCode = IDataBase::AddFriendRequest(iUserId, iFrReqId);
@@ -283,8 +274,6 @@ void CMyServer::m_AddFriendRequest(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_DeleteFriendRequest(std::vector <std::string> &msg){
-    int iUserId;
-    int iFrReqId;
     iUserId = std::stoi(msg[1]);
     iFrReqId = std::stoi(msg[2]);
     int iRtCode = IDataBase::DeleteFriendRequest(iUserId, iFrReqId);
@@ -308,8 +297,6 @@ void CMyServer::m_DeleteFriendRequest(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_CreateCategory(std::vector <std::string> &msg){
-    int iCategoryId;
-    int iUserId;
     std::string sCategoryName;
     iCategoryId = std::stoi(msg[1]);
     iUserId = std::stoi(msg[2]);
@@ -339,8 +326,6 @@ void CMyServer::m_CreateCategory(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_GetCategory(std::vector <std::string> &msg){
-    int iCategoryId;
-    int iUserId;
     std::vector<std::string> vsCategory;
     int iRtCode = IDataBase::GetCategory(iCategoryId, iUserId, vsCategory);
     QJsonObject GetCategory;
@@ -371,8 +356,6 @@ void CMyServer::m_GetCategory(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_DeleteCategory(std::vector <std::string> &msg){
-    int iCategoryId;
-    int iUserId;
     iCategoryId = std::stoi(msg[1]);
     iUserId = std::stoi(msg[2]);
     int iRtCode = IDataBase::DeleteCategory(iCategoryId, iUserId);
@@ -396,8 +379,6 @@ void CMyServer::m_DeleteCategory(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_ChangeCategoryName(std::vector <std::string> &msg){
-    int iCategoryId;
-    int iUserId;
     std::string sCategoryName;
     iCategoryId = std::stoi(msg[1]);
     iUserId = std::stoi(msg[2]);
@@ -427,8 +408,6 @@ void CMyServer::m_ChangeCategoryName(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_AddNote(std::vector <std::string> &msg){
-    int iNoteId;
-    int iCategoryId;
     std::string sKeyWords;
     iNoteId = std::stoi(msg[1]);
     iCategoryId = std::stoi(msg[2]);
@@ -458,10 +437,8 @@ void CMyServer::m_AddNote(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_GetNote(std::vector <std::string> &msg){
-    int NoteId;
-    int iUserId;
     std::vector<std::string> vsNote;
-    int iRtCode = IDataBase::GetNote(NoteId, iUserId, vsNote);
+    int iRtCode = IDataBase::GetNote(iNoteId, iUserId, vsNote);
     QJsonObject GetNote;
     std::string gNote = "";
     switch(iRtCode){
@@ -490,9 +467,6 @@ void CMyServer::m_GetNote(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_ChangeCategoryId(std::vector <std::string> &msg){
-    int iNoteId;
-    int iCategoryId;
-    int iUserId;
     iNoteId = std::stoi(msg[1]);
     iCategoryId = std::stoi(msg[2]);
     iUserId = std::stoi(msg[3]);
@@ -521,7 +495,6 @@ void CMyServer::m_ChangeCategoryId(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_SetHeader(std::vector <std::string> &msg){
-    int iNoteId;
     std::string sHeader;
     iNoteId = std::stoi(msg[1]);
     sHeader = msg[2];
@@ -546,7 +519,6 @@ void CMyServer::m_SetHeader(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_SetText(std::vector <std::string> &msg){
-    int iNoteId;
     std::string sText;
     iNoteId = std::stoi(msg[1]);
     sText = msg[2];
@@ -571,8 +543,6 @@ void CMyServer::m_SetText(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_AddFriendAccess(std::vector <std::string> &msg){
-    int iNoteId;
-    int iFriendId;
     iNoteId = std::stoi(msg[1]);
     iFriendId = std::stoi(msg[2]);
     int iRtCode = IDataBase::AddFriendAccess(iNoteId, iFriendId);
@@ -596,8 +566,6 @@ void CMyServer::m_AddFriendAccess(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_CheckFriendAccess(std::vector <std::string> &msg){
-    int iNoteId;
-    int iFriendId;
     iNoteId = std::stoi(msg[1]);
     iFriendId = std::stoi(msg[2]);
     int iRtCode = IDataBase::CheckFriendAccess(iNoteId, iFriendId);
@@ -625,8 +593,6 @@ void CMyServer::m_CheckFriendAccess(std::vector <std::string> &msg){
     }
 }
 void CMyServer::m_DeleteFriendAccess(std::vector <std::string> &msg){
-    int iNoteId;
-    int iFriendId;
     iNoteId = std::stoi(msg[1]);
     iFriendId = std::stoi(msg[2]);
     int iRtCode = IDataBase::DeleteFriendAccess(iNoteId, iFriendId);

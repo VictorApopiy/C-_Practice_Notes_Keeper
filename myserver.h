@@ -22,16 +22,16 @@
 
 class CMyServer: public QTcpServer{
     Q_OBJECT
-public:
-    CMyServer();
-    ~CMyServer();
-
+private:
+    int iUserId = -1;
     QTcpSocket* socket;
     QByteArray Data;
     QByteArray res;
     QJsonDocument document;
     QByteArray bytes;
-
+public:
+    CMyServer();
+    ~CMyServer();
 
 public slots:
     void startServer();
