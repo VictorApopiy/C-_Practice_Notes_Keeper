@@ -24,6 +24,11 @@ class CMyServer: public QTcpServer{
     Q_OBJECT
 private:
     int iUserId = -1;
+    int iNoteId = -1;
+    int iFriendId = -1;
+    int iCategoryId = -1;
+    int iFrReqId = -1;
+    int iId = -1;
     QTcpSocket* socket;
     QByteArray Data;
     QByteArray res;
