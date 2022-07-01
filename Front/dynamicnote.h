@@ -16,7 +16,7 @@ public:
 public slots:
 
 private:
-    int noteID = 0;
+    int m_noteID = 0;
 };
 
 #endif // DYNAMICNOTE_H

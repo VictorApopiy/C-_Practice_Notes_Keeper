@@ -3,13 +3,14 @@
 #include "category.h"
 #include "userpage.h"
 #include "dynamicnote.h"
-#include "popupmenu.h"
+#include "popupmenutextedit.h"
 
 DeletedNotes::DeletedNotes(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::DeletedNotes)
 {
     ui->setupUi(this);
+
 }
 
 DeletedNotes::~DeletedNotes()
@@ -32,7 +33,7 @@ void DeletedNotes::recieveData(QString str)
 
     DynamicNote *deletedCategory = new DynamicNote(this);
     deletedCategory->setText(QString(str));
-    PopupMenu* menu = new PopupMenu(deletedCategory, this);
+    PopupMenuTextEdit* menu = new PopupMenuTextEdit(deletedCategory, this);
     menu ->addAction("Open");
     menu ->addAction("Edit");
     menu ->addAction("Delete");
@@ -40,8 +41,6 @@ void DeletedNotes::recieveData(QString str)
     deletedCategory->setStyleSheet(       "color: rgb(27, 43, 66);"
                                    "border: 2px solid  rgb(27, 43, 66);"
                                    "border-radius: 10px;"
-                                   "padding: 1px 18px 1px 3px;"
-                                   "min-width: 6em;}"
                                    "Text-align:left;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
 
     deletedCategory->setFixedSize(224, 103);
@@ -49,19 +48,3 @@ void DeletedNotes::recieveData(QString str)
 
    // connect(deletedCategory, SIGNAL(clicked()), this, SLOT(MenuOpenCategory()));
 }
-
-void DeletedNotes::on_DNHomeButton_clicked()
-{
-    Category* w = new Category();
-    w->show();
-    close();
-}
-
-
-void DeletedNotes::on_DNUserButton_clicked()
-{
-    UserPage* w = new UserPage();
-     w->show();
-     close();
-}
-

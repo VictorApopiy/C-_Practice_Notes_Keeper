@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 #include <QMenuBar>
+#include <QScopedPointer>
+
+class AddCategory;
+class AddSaveNote;
+class NotesInCategory;
 
 namespace Ui {
 class Category;
@@ -14,18 +19,11 @@ class Category : public QMainWindow
 
 public:
     explicit Category(QWidget *parent = nullptr);
+    const Ui::Category &getCategory() {return *ui;}
     ~Category();
 
 private slots:
     void recieveData(QString str);
-
-    void on_CCreateCategoryButton_clicked();
-
-    void on_CDeletedNoteButton_clicked();
-
-    void on_CUserButton_clicked();
-
-    void on_CreateNoteButton_clicked();
 
     void MenuOpenCategory();
 
@@ -35,7 +33,9 @@ private slots:
 
 private:
     Ui::Category *ui;
-
+    QScopedPointer <AddCategory> m_addcategoryform;
+    QScopedPointer <AddSaveNote> m_addsavenote;
+    QScopedPointer <NotesInCategory> m_notesincategory;
 };
 
 #endif // CATEGORY_H

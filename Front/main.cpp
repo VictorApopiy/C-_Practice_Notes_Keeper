@@ -1,6 +1,4 @@
 #include "login.h"
-#include "category.h"
-
 
 #include <QApplication>
 

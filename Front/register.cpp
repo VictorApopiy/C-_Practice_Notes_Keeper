@@ -7,6 +7,12 @@ Register::Register(QWidget *parent) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+
+    m_categoryform.reset(new Category());
+
+    connect(ui->RRegisterButton, SIGNAL(clicked()), m_categoryform.get(), SLOT(show()));
+    connect(ui->RRegisterButton, SIGNAL(clicked()), this, SLOT(close()));
+
     ui->RLoginLEdit->setPlaceholderText(QString("Login"));
     ui->RPasswordLEdit->setPlaceholderText(QString("Create password"));
 }
@@ -16,10 +22,4 @@ Register::~Register()
     delete ui;
 }
 
-void Register::on_RRegisterButton_clicked()
-{
-    Category* w = new Category();
-    w->show();
-    close();
-}
 

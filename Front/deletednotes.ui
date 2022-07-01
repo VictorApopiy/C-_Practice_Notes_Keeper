@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>DeletedNotes</class>
  <widget class="QMainWindow" name="DeletedNotes">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,6 +12,18 @@
     <width>960</width>
     <height>683</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>683</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>960</width>
+    <height>683</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -24,11 +39,17 @@
     <property name="topMargin">
      <number>0</number>
     </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">
        <size>
-        <width>963</width>
+        <width>960</width>
         <height>82</height>
        </size>
       </property>
@@ -191,8 +212,8 @@ color: rgb(27, 43, 66);</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>883</width>
-             <height>573</height>
+             <width>896</width>
+             <height>586</height>
             </rect>
            </property>
           </widget>

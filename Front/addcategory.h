@@ -2,7 +2,9 @@
 #define ADDCATEGORY_H
 
 #include <QDialog>
-#include "category.h"
+#include <QScopedPointer>
+
+//class Category;
 
 namespace Ui {
 class AddCategory;
@@ -14,6 +16,7 @@ class AddCategory : public QDialog
 
 public:
     explicit AddCategory(QWidget *parent = nullptr);
+    const Ui::AddCategory &getAddCategory() {return *ui;}
     ~AddCategory();
 
 signals:
@@ -22,11 +25,9 @@ signals:
 private slots:
     void onButtonSend();
 
-    void on_ACCanselButton_clicked();
-
 private:
     Ui::AddCategory *ui;
-    Category *categoryform;
+//    QScopedPointer <Category> m_categoryform;
 };
 
 #endif // ADDCATEGORY_H

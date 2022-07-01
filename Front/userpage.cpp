@@ -8,6 +8,7 @@ UserPage::UserPage(QWidget *parent) :
     ui(new Ui::UserPage)
 {
     ui->setupUi(this);
+
 }
 
 UserPage::~UserPage()
@@ -15,10 +16,5 @@ UserPage::~UserPage()
     delete ui;
 }
 
-void UserPage::on_UPLogOutButton_clicked()
-{
-    Login* w = new Login();
-    w->show();
-    close();
-}
+
 

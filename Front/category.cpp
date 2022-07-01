@@ -1,18 +1,57 @@
 #include "category.h"
 #include "ui_category.h"
 #include "addcategory.h"
-#include "popupmenu.h"
+#include "popupmenubutton.h"
 #include "dynamiccategory.h"
 #include "deletednotes.h"
 #include "userpage.h"
 #include "addsavenote.h"
 #include "notesincategory.h"
+#include "ui_notesincategory.h"
+#include "ui_addcategory.h"
+#include "ui_addsavenote.h"
 
 Category::Category(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Category)
 {
     ui->setupUi(this);
+
+    m_addcategoryform.reset(new AddCategory());
+    m_addsavenote.reset(new AddSaveNote());
+    m_notesincategory.reset(new NotesInCategory());
+
+    connect(ui->CCreateCategoryButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(show()));
+    connect(ui->CCreateCategoryButton, SIGNAL(clicked()), this, SLOT(close()));
+
+    connect(ui->CreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
+    connect(ui->CreateNoteButton, SIGNAL(clicked()), this, SLOT(close()));
+
+
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(onButtonSend()));
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));
+
+    connect(m_addcategoryform->getAddCategory().ACCanselButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_addcategoryform->getAddCategory().ACCanselButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(close()));
+
+
+    connect(m_addsavenote->getAddSaveNote().ASNCanselButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_addsavenote->getAddSaveNote().ASNCanselButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(close()));
+
+    connect(m_addsavenote->getAddSaveNote().ASNHomeButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_addsavenote->getAddSaveNote().ASNHomeButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(close()));
+
+
+    connect(m_notesincategory->getNotesInCategory().NCHomeButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_notesincategory->getNotesInCategory().NCHomeButton, SIGNAL(clicked()), m_notesincategory.get(), SLOT(close()));
+
+    connect(m_notesincategory->getNotesInCategory().NCCreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
+    connect(m_notesincategory->getNotesInCategory().NCCreateNoteButton, SIGNAL(clicked()), m_notesincategory.get(), SLOT(close()));
+
+
+    //    connect(ui->CDeletedNoteButton, SIGNAL(clicked()), m_notesincategory.get(), SLOT(show()));
+    //    connect(ui->CDeletedNoteButton, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 Category::~Category()
@@ -25,18 +64,11 @@ void Category::recieveData(QString str)
 {
     ui->CScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     QGridLayout *lay = new QGridLayout(ui->CScrollArea);
-    lay->addWidget(ui->CScrollArea, 0, 0, 1, 1);
-
-    auto  gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
-    auto  widget = new QWidget(ui->scrollAreaWidgetContents);
-    widget->setObjectName(QString::fromUtf8("widget"));
-    gridLayout->addWidget(widget, 0, 0, 1, 3);
-
-
+    lay->addWidget(ui->CScrollArea, 0, 0, 1, 3);
 
     DynamicCategory *category = new DynamicCategory(this);
     category->setText(QString(str));
-    PopupMenu* menu = new PopupMenu(category, this);
+    PopupMenuButton* menu = new PopupMenuButton(category, this);
     menu ->addAction("Open");
     menu ->addAction("Edit");
     menu ->addAction("Delete");
@@ -44,59 +76,21 @@ void Category::recieveData(QString str)
     category->setStyleSheet(       "color: rgb(27, 43, 66);"
                                    "border: 2px solid  rgb(27, 43, 66);"
                                    "border-radius: 10px;"
-                                   "padding: 1px 18px 1px 3px;"
-                                   "min-width: 6em;}"
-                                   "Text-align:left;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
+                                   "Text-align:left top;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
 
     category->setFixedSize(224, 103);
-    gridLayout->addWidget(category);
-
+    lay->addWidget(category);
     //connect(category, SIGNAL(clicked()), this, SLOT(MenuOpenCategory()));
-}
-
-void Category::on_CCreateCategoryButton_clicked()
-{
-    AddCategory* w = new AddCategory();
-    w->show();
-    close();
-}
-
-
-void Category::on_CDeletedNoteButton_clicked()
-{
-    DeletedNotes* w = new DeletedNotes();
-    w->show();
-    close();
-}
-
-
-void Category::on_CUserButton_clicked()
-{
-    UserPage* w = new UserPage();
-    w->show();
-    close();
-}
-
-
-void Category::on_CreateNoteButton_clicked()
-{
-    AddSaveNote* w = new AddSaveNote();
-    w->show();
-    close();
 }
 
 void Category::MenuOpenCategory()
 {
-    NotesInCategory* w = new NotesInCategory();
-    w->show();
-    close();
+
 }
 
 void Category::MenuEditCategory()
 {
-    NotesInCategory* w = new NotesInCategory();
-    w->show();
-    close();
+
 }
 
 void Category::MenuDeleteCategory()

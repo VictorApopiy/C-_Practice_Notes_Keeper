@@ -4,13 +4,22 @@
 #include "userpage.h"
 #include "addsavenote.h"
 #include "dynamicnote.h"
-#include "popupmenu.h"
+#include "popupmenutextedit.h"
 
 NotesInCategory::NotesInCategory(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NotesInCategory)
 {
     ui->setupUi(this);
+
+    // m_addsavenote.reset(new AddSaveNote());
+
+//     connect(ui->NCHomeButton, SIGNAL(clicked()), &m_categoryform, SLOT(show()));
+//     connect(ui->NCHomeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+//     connect(ui->NCCreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
+//     connect(ui->NCCreateNoteButton, SIGNAL(clicked()), this, SLOT(close()));
+
     ui->NCSearchLEdit->setPlaceholderText(QString("Search"));
 }
 
@@ -34,7 +43,7 @@ void NotesInCategory::recieveData(QString str)
 
     DynamicNote *deletedCategory = new DynamicNote(this);
     deletedCategory->setText(QString(str));
-    PopupMenu* menu = new PopupMenu(deletedCategory, this);
+    PopupMenuTextEdit* menu = new PopupMenuTextEdit(deletedCategory, this);
     menu ->addAction("Open");
     menu ->addAction("Edit");
     menu ->addAction("Delete");
@@ -42,8 +51,6 @@ void NotesInCategory::recieveData(QString str)
     deletedCategory->setStyleSheet(       "color: rgb(27, 43, 66);"
                                    "border: 2px solid  rgb(27, 43, 66);"
                                    "border-radius: 10px;"
-                                   "padding: 1px 18px 1px 3px;"
-                                   "min-width: 6em;}"
                                    "Text-align:left;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
 
     deletedCategory->setFixedSize(224, 103);
@@ -52,26 +59,4 @@ void NotesInCategory::recieveData(QString str)
    // connect(deletedCategory, SIGNAL(clicked()), this, SLOT(MenuOpenCategory()));
 }
 
-void NotesInCategory::on_NCHomeButton_clicked()
-{
-    Category* w = new Category();
-    w->show();
-    close();
-}
-
-
-void NotesInCategory::on_NCUserButton_clicked()
-{
-    UserPage* w = new UserPage();
-    w->show();
-    close();
-}
-
-
-void NotesInCategory::on_NCCreateNoteButton_clicked()
-{
-    AddSaveNote* w = new AddSaveNote();
-    w->show();
-    close();
-}
 

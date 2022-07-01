@@ -19,8 +19,10 @@ SOURCES += \
     login.cpp \
     main.cpp \
     notesincategory.cpp \
-    popupmenu.cpp \
+    popupmenubutton.cpp \
+    popupmenutextedit.cpp \
     register.cpp \
+    useridsingleton.cpp \
     userpage.cpp
 
 HEADERS += \
@@ -32,8 +34,10 @@ HEADERS += \
     dynamicnote.h \
     login.h \
     notesincategory.h \
-    popupmenu.h \
+    popupmenubutton.h \
+    popupmenutextedit.h \
     register.h \
+    useridsingleton.h \
     userpage.h
 
 FORMS += \

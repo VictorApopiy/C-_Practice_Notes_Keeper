@@ -2,7 +2,12 @@
 #define LOGIN_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
 
+class Register;
+class Category;
+class DeletedNotes;
+class UserPage;
 
 namespace Ui {
 class Login;
@@ -17,12 +22,15 @@ public:
     ~Login();
 
 private slots:
-    void on_LRegisterButton_clicked();
 
     void on_LLoginButton_clicked();
 
 private:
     Ui::Login *ui;
+    QScopedPointer <Register> m_registerform;
+    QScopedPointer <Category> m_categoryform;
+    QScopedPointer <DeletedNotes> m_deletednotesform;
+    QScopedPointer <UserPage> m_userform;
 };
 
 #endif // LOGIN_H

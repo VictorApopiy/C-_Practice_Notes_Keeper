@@ -2,15 +2,9 @@
 #define ADDSAVENOTE_H
 
 #include <QMainWindow>
-#include <QtCore>
-#include <iostream>
-#include <QIODevice>
-#include <string>
-#include <vector>
-#include <memory.h>
-#include <QRegularExpression>
-#include <QStringConverter>
-#include "notesincategory.h"
+#include <QScopedPointer>
+
+//class Category;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,18 +16,16 @@ class AddSaveNote : public QMainWindow
 
 public:
     AddSaveNote(QWidget *parent = nullptr);
+    const Ui::MainWindow &getAddSaveNote() {return *ui;}
     ~AddSaveNote();
 
 private slots:
     void on_ASNSaveNoteButton_clicked();
+
     void CreateJson(const QString &path);
-
-    void on_ASNCanselButton_clicked();
-
-    void on_ASNHomeButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    NotesInCategory *notesInCategory;
+//    QScopedPointer <Category> m_categoryform;
 };
 #endif // ADDSAVENOTE_H

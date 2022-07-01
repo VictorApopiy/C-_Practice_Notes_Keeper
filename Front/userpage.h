@@ -2,6 +2,8 @@
 #define USERPAGE_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
+
 
 namespace Ui {
 class UserPage;
@@ -13,10 +15,11 @@ class UserPage : public QMainWindow
 
 public:
     explicit UserPage(QWidget *parent = nullptr);
+    const Ui::UserPage &getUserPage() {return *ui;}
     ~UserPage();
 
 private slots:
-    void on_UPLogOutButton_clicked();
+
 
 private:
     Ui::UserPage *ui;

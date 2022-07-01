@@ -4,7 +4,7 @@ DynamicNote::DynamicNote(QWidget *parent) :
     QTextEdit(parent)
 {
     ResID++;
-    noteID = ResID;
+    m_noteID = ResID;
 
 }
 
@@ -15,7 +15,7 @@ DynamicNote::~DynamicNote()
 
 int DynamicNote::getID()
 {
-    return noteID;
+    return m_noteID;
 }
 
 int DynamicNote::ResID = 0;

@@ -1,5 +1,14 @@
 #include "addsavenote.h"
 #include "ui_addsavenote.h"
+#include <QtCore>
+#include <iostream>
+#include <QIODevice>
+#include <string>
+#include <vector>
+#include <memory>
+#include <QRegularExpression>
+#include <QStringConverter>
+#include "notesincategory.h"
 #include "category.h"
 
 
@@ -8,6 +17,13 @@ AddSaveNote::AddSaveNote(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+//    connect(ui->ASNCanselButton, SIGNAL(clicked()), &m_categoryform, SLOT(show()));
+//    connect(ui->ASNCanselButton, SIGNAL(clicked()), this, SLOT(close()));
+
+//    connect(ui->ASNHomeButton, SIGNAL(clicked()), &m_categoryform, SLOT(show()));
+//    connect(ui->ASNHomeButton, SIGNAL(clicked()), this, SLOT(close()));
+
     ui->ASNKeywordsTEdit->setPlaceholderText(QString("Record format: Keyword1;Keyword2;Keyword3"));
 }
 
@@ -146,21 +162,5 @@ void AddSaveNote::on_ASNSaveNoteButton_clicked()
         ReadJson( path );
     }
 
-}
-
-
-void AddSaveNote::on_ASNCanselButton_clicked()
-{
-    Category* w = new Category();
-    w->show();
-    close();
-}
-
-
-void AddSaveNote::on_ASNHomeButton_clicked()
-{
-    Category* w = new Category();
-    w->show();
-    close();
 }
 

@@ -24,11 +24,17 @@
     <property name="topMargin">
      <number>0</number>
     </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">
        <size>
-        <width>963</width>
+        <width>960</width>
         <height>82</height>
        </size>
       </property>
@@ -383,8 +389,8 @@ color: rgb(27, 43, 66);</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>883</width>
-             <height>517</height>
+             <width>896</width>
+             <height>530</height>
             </rect>
            </property>
           </widget>

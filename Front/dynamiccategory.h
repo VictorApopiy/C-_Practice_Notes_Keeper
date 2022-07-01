@@ -17,7 +17,7 @@ public:
 public slots:
 
 private:
-    int categoryID = 0;
+    int m_categoryID = 0;
 };
 
 #endif // DYNAMICCATEGORY_H

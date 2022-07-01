@@ -2,6 +2,9 @@
 #define REGISTER_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
+
+class Category;
 
 namespace Ui {
 class Register;
@@ -16,12 +19,11 @@ public:
     ~Register();
 
 private slots:
-    void on_pushButton_clicked();
 
-    void on_RRegisterButton_clicked();
 
 private:
     Ui::Register *ui;
+    QScopedPointer <Category> m_categoryform;
 };
 
 #endif // REGISTER_H

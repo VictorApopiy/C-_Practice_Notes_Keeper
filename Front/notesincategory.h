@@ -2,6 +2,12 @@
 #define NOTESINCATEGORY_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
+
+//class Category;
+//class AddSaveNote;
+//class UserPage;
+
 namespace Ui {
 class NotesInCategory;
 }
@@ -12,19 +18,18 @@ class NotesInCategory : public QMainWindow
 
 public:
     explicit NotesInCategory(QWidget *parent = nullptr);
+    const Ui::NotesInCategory &getNotesInCategory() {return *ui;}
     ~NotesInCategory();
 
 private slots:
-    void on_NCHomeButton_clicked();
-
-    void on_NCUserButton_clicked();
-
-    void on_NCCreateNoteButton_clicked();
 
     void recieveData(QString str);
 
 private:
     Ui::NotesInCategory *ui;
+//    Category &m_categoryform;
+//    QScopedPointer <AddSaveNote> m_addsavenote;
+//    QScopedPointer <UserPage> m_userform;
 };
 
 #endif // NOTESINCATEGORY_H

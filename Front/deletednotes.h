@@ -2,6 +2,7 @@
 #define DELETEDNOTES_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
 
 namespace Ui {
 class DeletedNotes;
@@ -13,13 +14,10 @@ class DeletedNotes : public QMainWindow
 
 public:
     explicit DeletedNotes(QWidget *parent = nullptr);
+    const Ui::DeletedNotes &getDeletedNotes() {return *ui;}
     ~DeletedNotes();
 
 private slots:
-    void on_DNHomeButton_clicked();
-
-    void on_DNUserButton_clicked();
-
     void recieveData(QString str);
 
 private:

@@ -4,7 +4,7 @@ DynamicCategory::DynamicCategory(QWidget *parent) :
     QPushButton(parent)
 {
     ResID++;
-    categoryID = ResID;
+    m_categoryID = ResID;
 
 }
 
@@ -15,7 +15,7 @@ DynamicCategory::~DynamicCategory()
 
 int DynamicCategory::getID()
 {
-    return categoryID;
+    return m_categoryID;
 }
 
 int DynamicCategory::ResID = 0;
