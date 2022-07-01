@@ -1,5 +1,5 @@
 #ifndef DB_INTERFACE
-#define  DB_INTERFACE
+#define DB_INTERFACE
 #include <iostream>
 #include <vector>
 

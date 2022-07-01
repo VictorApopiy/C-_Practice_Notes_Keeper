@@ -1,56 +1,12 @@
-/*#ifndef MYSERVER_H
-#define MYSERVER_H
-
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonParseError>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QFile>
-#include <QString>
-#include <QByteArray>
-
-class myserver: public QTcpServer{
-    Q_OBJECT
-public:
-    myserver();
-    ~myserver();
-
-    QTcpSocket* socket;
-    QByteArray Data;
-
-    QJsonDocument doc;
-    QJsonParseError docError;
-
-    QByteArray res;
-
-    QSqlDatabase db;
-
-
-public slots:
-    void startServer();
-    void incomingConnection(qintptr socketDescriptor);
-    void sockReady();
-    void sockDisc();
-};
-
-#endif // MYSERVER_H*/
 #ifndef MYSERVER_H
 #define MYSERVER_H
 
 #include <QTcpServer>
 #include <QTcpSocket>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonParseError>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QFile>
+#include <QJsonDocument>
 #include <QString>
 #include <QByteArray>
-#include <QByteArrayView>
 #include <QtCore>
 #include <iostream>
 #include <QIODevice>
@@ -61,27 +17,48 @@ public slots:
 #include <QStringConverter>
 #include "lib/json.hpp"
 
-class myserver: public QTcpServer{
+#define PORT 5555
+#define TIME 5000
+
+class CMyServer: public QTcpServer{
     Q_OBJECT
 public:
-    myserver();
-    ~myserver();
+    CMyServer();
+    ~CMyServer();
 
     QTcpSocket* socket;
     QByteArray Data;
-
-    QJsonDocument doc;
-    QJsonParseError docError;
-
     QByteArray res;
+    QJsonDocument document;
+    QByteArray bytes;
 
-    QSqlDatabase db;
 
 public slots:
     void startServer();
     void incomingConnection(qintptr pisocketDescriptor);
     void sockReady();
     void sockDisc();
+    void m_AddUser(std::vector <std::string> &msg);
+    void m_GetUserId(std::vector <std::string> &msg);
+    void m_GetFriendList(std::vector <std::string> &msg);
+    void m_AddFriend(std::vector <std::string> &msg);
+    void m_DeleteFriend(std::vector <std::string> &msg);
+    void m_GetFriendRequestsList(std::vector <std::string> &msg);
+    void m_AddFriendRequest(std::vector <std::string> &msg);
+    void m_DeleteFriendRequest(std::vector <std::string> &msg);
+    void m_CreateCategory(std::vector <std::string> &msg);
+    void m_GetCategory(std::vector <std::string> &msg);
+    void m_DeleteCategory(std::vector <std::string> &msg);
+    void m_ChangeCategoryName(std::vector <std::string> &msg);
+    void m_AddNote(std::vector <std::string> &msg);
+    void m_GetNote(std::vector <std::string> &msg);
+    void m_ChangeCategoryId(std::vector <std::string> &msg);
+    void m_SetHeader(std::vector <std::string> &msg);
+    void m_SetText(std::vector <std::string> &msg);
+    void m_AddFriendAccess(std::vector <std::string> &msg);
+    void m_CheckFriendAccess(std::vector <std::string> &msg);
+    void m_DeleteFriendAccess(std::vector <std::string> &msg);
+    void m_socketWrite(QByteArray &bytes);
 };
 
 #endif // MYSERVER_H
