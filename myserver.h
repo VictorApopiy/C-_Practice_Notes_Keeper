@@ -32,18 +32,18 @@ private:
 
     void AddUser(const std::vector <std::string> &msg);
     void GetUserId(const std::vector <std::string> &msg);
-    void GetFriendList(const std::vector <std::string> &msg);
+    void GetFriendList();
     void AddFriend(const std::vector <std::string> &msg);
     void DeleteFriend(const std::vector <std::string> &msg);
-    void GetFriendRequestsList(const std::vector <std::string> &msg);
+    void GetFriendRequestsList();
     void AddFriendRequest(const std::vector <std::string> &msg);
     void DeleteFriendRequest(const std::vector <std::string> &msg);
     void CreateCategory(const std::vector <std::string> &msg);
-    void GetCategory(const std::vector <std::string> &msg);
+    void GetCategory();
     void DeleteCategory(const std::vector <std::string> &msg);
     void ChangeCategoryName(const std::vector <std::string> &msg);
     void AddNote(const std::vector <std::string> &msg);
-    void GetNote(const std::vector <std::string> &msg);
+    void GetNote();
     void ChangeCategoryId(const std::vector <std::string> &msg);
     void SetHeader(const std::vector <std::string> &msg);
     void SetText(const std::vector <std::string> &msg);
