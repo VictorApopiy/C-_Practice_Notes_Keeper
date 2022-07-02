@@ -2,9 +2,6 @@
 #define ADDCATEGORY_H
 
 #include <QDialog>
-#include <QScopedPointer>
-
-//class Category;
 
 namespace Ui {
 class AddCategory;
@@ -27,7 +24,6 @@ private slots:
 
 private:
     Ui::AddCategory *ui;
-//    QScopedPointer <Category> m_categoryform;
 };
 
 #endif // ADDCATEGORY_H

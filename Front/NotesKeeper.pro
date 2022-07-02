@@ -22,7 +22,6 @@ SOURCES += \
     popupmenubutton.cpp \
     popupmenutextedit.cpp \
     register.cpp \
-    useridsingleton.cpp \
     userpage.cpp
 
 HEADERS += \
@@ -37,7 +36,6 @@ HEADERS += \
     popupmenubutton.h \
     popupmenutextedit.h \
     register.h \
-    useridsingleton.h \
     userpage.h
 
 FORMS += \

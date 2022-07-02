@@ -8,6 +8,10 @@
 #include "deletednotes.h"
 #include "userpage.h"
 
+int* Login::userId{nullptr};
+
+std::mutex Login::mutex;
+
 Login::Login(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Login)
@@ -55,6 +59,17 @@ Login::~Login()
 {
     delete ui;
 }
+
+int *Login::GetInstance(const int& value)
+{
+    std::lock_guard<std::mutex> lock(mutex);
+    if (userId == nullptr)
+    {
+        userId = new int(value);
+    }
+    return userId;
+}
+
 
 void Login::on_LLoginButton_clicked()
 {

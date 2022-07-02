@@ -2,9 +2,6 @@
 #define ADDSAVENOTE_H
 
 #include <QMainWindow>
-#include <QScopedPointer>
-
-//class Category;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +23,5 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-//    QScopedPointer <Category> m_categoryform;
 };
 #endif // ADDSAVENOTE_H

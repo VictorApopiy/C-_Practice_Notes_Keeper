@@ -21,16 +21,34 @@ Category::Category(QWidget *parent) :
     m_addsavenote.reset(new AddSaveNote());
     m_notesincategory.reset(new NotesInCategory());
 
-    connect(ui->CCreateCategoryButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(show()));
+    connect(ui->CCreateCategoryButton, SIGNAL(clicked()),
+            m_addcategoryform->getAddCategory().ACCategoryTitleLEdit, SLOT(clear()));
     connect(ui->CCreateCategoryButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->CCreateCategoryButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(show()));
 
+    connect(ui->CreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote->getAddSaveNote().ASNCategoryComBox, SLOT(clear()));
+    connect(ui->CreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote->getAddSaveNote().ASNUserComBox, SLOT(clear()));
+    connect(ui->CreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote->getAddSaveNote().ASNTitleLEdit, SLOT(clear()));
+    connect(ui->CreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote->getAddSaveNote().ASNKeywordsTEdit, SLOT(clear()));
+    connect(ui->CreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote->getAddSaveNote().ASNDescriptionTEdit, SLOT(clear()));
     connect(ui->CreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
     connect(ui->CreateNoteButton, SIGNAL(clicked()), this, SLOT(close()));
 
 
-    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(onButtonSend()));
-    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()), this, SLOT(show()));
-    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(sendData(QString)), this, SLOT(recieveData(QString)));
+
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()),
+            m_addcategoryform.get(), SLOT(m_addcategoryform::onButtonSend()));
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()), this,
+            SLOT(show()));
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton,
+            SIGNAL(m_addcategoryform::sendData(QString)), this, SLOT(recieveData(QString)));
+    connect(m_addcategoryform->getAddCategory().ACCreateCategoryButton, SIGNAL(clicked()),
+            m_addcategoryform.get(), SLOT(close()));
 
     connect(m_addcategoryform->getAddCategory().ACCanselButton, SIGNAL(clicked()), this, SLOT(show()));
     connect(m_addcategoryform->getAddCategory().ACCanselButton, SIGNAL(clicked()), m_addcategoryform.get(), SLOT(close()));
@@ -42,11 +60,17 @@ Category::Category(QWidget *parent) :
     connect(m_addsavenote->getAddSaveNote().ASNHomeButton, SIGNAL(clicked()), this, SLOT(show()));
     connect(m_addsavenote->getAddSaveNote().ASNHomeButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(close()));
 
+    connect(m_addsavenote->getAddSaveNote().ASNSaveNoteButton, SIGNAL(clicked()), this, SLOT(show()));
+    connect(m_addsavenote->getAddSaveNote().ASNSaveNoteButton, SIGNAL(clicked()), m_addsavenote.get(),
+            SLOT(close()));
+
 
     connect(m_notesincategory->getNotesInCategory().NCHomeButton, SIGNAL(clicked()), this, SLOT(show()));
-    connect(m_notesincategory->getNotesInCategory().NCHomeButton, SIGNAL(clicked()), m_notesincategory.get(), SLOT(close()));
+    connect(m_notesincategory->getNotesInCategory().NCHomeButton, SIGNAL(clicked()),
+            m_notesincategory.get(), SLOT(close()));
 
-    connect(m_notesincategory->getNotesInCategory().NCCreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
+    connect(m_notesincategory->getNotesInCategory().NCCreateNoteButton, SIGNAL(clicked()),
+            m_addsavenote.get(), SLOT(show()));
     connect(m_notesincategory->getNotesInCategory().NCCreateNoteButton, SIGNAL(clicked()), m_notesincategory.get(), SLOT(close()));
 
 

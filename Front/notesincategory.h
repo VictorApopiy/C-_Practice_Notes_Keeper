@@ -2,11 +2,6 @@
 #define NOTESINCATEGORY_H
 
 #include <QMainWindow>
-#include <QScopedPointer>
-
-//class Category;
-//class AddSaveNote;
-//class UserPage;
 
 namespace Ui {
 class NotesInCategory;
@@ -27,9 +22,6 @@ private slots:
 
 private:
     Ui::NotesInCategory *ui;
-//    Category &m_categoryform;
-//    QScopedPointer <AddSaveNote> m_addsavenote;
-//    QScopedPointer <UserPage> m_userform;
 };
 
 #endif // NOTESINCATEGORY_H

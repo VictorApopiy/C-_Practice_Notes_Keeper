@@ -2,7 +2,6 @@
 #define DELETEDNOTES_H
 
 #include <QMainWindow>
-#include <QScopedPointer>
 
 namespace Ui {
 class DeletedNotes;

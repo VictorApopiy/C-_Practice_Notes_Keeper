@@ -18,6 +18,7 @@ AddSaveNote::AddSaveNote(QWidget *parent)
 {
     ui->setupUi(this);
 
+
 //    connect(ui->ASNCanselButton, SIGNAL(clicked()), &m_categoryform, SLOT(show()));
 //    connect(ui->ASNCanselButton, SIGNAL(clicked()), this, SLOT(close()));
 
