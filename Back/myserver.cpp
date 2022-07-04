@@ -1,5 +1,4 @@
 #include "myserver.h"
-#include "IDataBase.cpp"
 #include "IDataBase.h"
 #include "DBErrors.h"
 
@@ -32,7 +31,7 @@ void CMyServer::incomingConnection(qintptr pisocketDescriptor){
 void CMyServer::sockReady(){
     Data = socket->readAll();
     qDebug()<<"Data: "<<Data;
-    parseJson(Data);
+     parseJson(Data);
 }
 void CMyServer::parseJson(QByteArray &Data){
     std::vector <std::string> msg;
@@ -43,6 +42,9 @@ void CMyServer::parseJson(QByteArray &Data){
     for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
             msg.push_back(it.value());
     }
+    msg[0] = "AddUser";
+    msg[1] = "Login";
+    msg[2] = "Password";
     if(msg.at(0)=="AddUser"){
             AddUser(msg);
     }

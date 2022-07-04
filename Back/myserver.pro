@@ -1,7 +1,6 @@
 QT -= gui
 QT += core
 QT += network
-QT += sql
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
@@ -13,7 +12,9 @@ CONFIG -= app_bundle
 SOURCES += \
         IDataBase.cpp \
         main.cpp \
-        myserver.cpp
+        myserver.cpp \
+        shell.c \
+        sqlite3.c
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -22,6 +23,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     DBErrors.h \
-    DBErrors.h \
     IDataBase.h \
-    myserver.h
+    myserver.h \
+    sqlite3.h \
+    sqlite3ext.h

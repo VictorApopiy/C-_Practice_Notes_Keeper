@@ -4,13 +4,18 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include "Database/sqlite3.h"
+#include "sqlite3.h"
+#include <cstring>
+
 
 class IDataBase {
 
+private:
+
+
 public:
-	static sqlite3_stmt* pSqliteStmt;
-	static const int SendRequestToDB(std::string sQuerry);
+    //static sqlite3_stmt* pSqliteStmt;
+    static const int SendRequestToDB(std::string sQuerry);
 //------------------------------------------------------------------------------
 //						USER
 //------------------------------------------------------------------------------
