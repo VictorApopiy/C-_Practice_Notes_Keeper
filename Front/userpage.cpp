@@ -9,6 +9,10 @@ UserPage::UserPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    socket = new QTcpSocket(this);
+    connect(socket,SIGNAL(()),this,SLOT(()));
+    connect(socket,SIGNAL(()),this,SLOT(()));
+
 }
 
 UserPage::~UserPage()

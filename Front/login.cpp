@@ -8,7 +8,9 @@
 #include "deletednotes.h"
 #include "userpage.h"
 
-int* Login::userId{nullptr};
+
+
+int* Login::user_Id{nullptr};
 
 std::mutex Login::mutex;
 
@@ -17,6 +19,11 @@ Login::Login(QWidget *parent) :
     ui(new Ui::Login)
 {
     ui->setupUi(this);
+
+    socket = new QTcpSocket(this);
+    connect(socket,SIGNAL(on_LLoginButton_clicked()),this,SLOT(on_LLoginButton_clicked()));
+    connect(socket,SIGNAL(disconnected()),this,SLOT(sockDisc()));
+    socket->connectToHost("127.0.0.1",5555);
 
     m_registerform.reset(new Register());
     m_categoryform.reset(new Category());
@@ -60,19 +67,67 @@ Login::~Login()
     delete ui;
 }
 
+struct User{
+    QString m_sLogin;
+    QString m_sPassword;
+    User(QString _sLogin, QString _sPassword)
+ {
+     m_sLogin = _sLogin;
+     m_sPassword = _sPassword;
+ }
+};
+
 int *Login::GetInstance(const int& value)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    if (userId == nullptr)
+    if (user_Id == nullptr)
     {
-        userId = new int(value);
+        user_Id = new int(value);
     }
-    return userId;
+    return user_Id;
 }
 
+void Login::sockDisc(){
+    socket->deleteLater();
+}
 
 void Login::on_LLoginButton_clicked()
 {
+    Data = socket->readAll();
+    User obj( ui->LLoginLEdit->text(), ui->LPasswordLEdit->text());
 
+    QJsonObject login;
+    login.insert("1_RequestType", "GetUserId");
+    login.insert("2_Login", obj.m_sLogin);
+    login.insert("3_Password", obj.m_sPassword);
+    QJsonDocument document;
+    document.setObject( login );
+    QByteArray bytes = document.toJson( QJsonDocument::Indented );
+    socket->write(bytes);
+    socket->waitForBytesWritten(500);
+
+    if(socket->waitForConnected(500)){
+        socket->waitForReadyRead(500);
+        Data = socket->readAll();
+        std::vector <std::string> msg;
+        QMessageBox msgBox;
+
+        nlohmann::json j;
+        j = nlohmann::json::parse(QString(Data).toStdString());
+
+        for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
+                msg.push_back(it.value());
+        }
+        if(msg.at(0) == "SUCCESS"){
+            int iUserId = std::stoi(msg.at(1));
+            userId = iUserId;
+        }
+        else if(msg.at(0) == "INVALID_INPUT_DATA"){
+            msgBox.setText("Invalid input data");
+        }
+        else if(msg.at(0) == "UNEXPECTED_ERROR"){
+            msgBox.setText("Unexpected error");
+        }
+    }
 }
 
