@@ -367,6 +367,9 @@ color: rgb(27, 43, 66);
       <property name="spacing">
        <number>1</number>
       </property>
+      <property name="rightMargin">
+       <number>50</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">

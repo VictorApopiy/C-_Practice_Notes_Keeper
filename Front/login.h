@@ -2,10 +2,17 @@
 #define LOGIN_H
 
 #include <QMainWindow>
+#include <QTcpSocket>
 #include <QScopedPointer>
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <QByteArray>
+#include <QMessageBox>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QString>
+#include "3rdparty/json.hpp"
 
 class Register;
 class Category;
@@ -23,6 +30,11 @@ class Login : public QMainWindow
 public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
+    QTcpSocket* socket;
+    int userId;
+
+public slots:
+    void sockDisc();
 
 private slots:
 
@@ -36,8 +48,9 @@ private:
     QScopedPointer <DeletedNotes> m_deletednotesform;
     QScopedPointer <UserPage> m_userform;
 
-    static int * userId;
+    static int * user_Id;
     static std::mutex mutex;
+    QByteArray Data;
 };
 
 #endif // LOGIN_H

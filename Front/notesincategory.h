@@ -2,6 +2,9 @@
 #define NOTESINCATEGORY_H
 
 #include <QMainWindow>
+#include <QGridLayout>
+#include <QTcpSocket>
+#include "3rdparty/json.hpp"
 
 namespace Ui {
 class NotesInCategory;
@@ -15,6 +18,7 @@ public:
     explicit NotesInCategory(QWidget *parent = nullptr);
     const Ui::NotesInCategory &getNotesInCategory() {return *ui;}
     ~NotesInCategory();
+    QTcpSocket* socket;
 
 private slots:
 
@@ -22,6 +26,7 @@ private slots:
 
 private:
     Ui::NotesInCategory *ui;
+    QGridLayout *lay;
 };
 
 #endif // NOTESINCATEGORY_H

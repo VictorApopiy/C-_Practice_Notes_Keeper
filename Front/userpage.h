@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QScopedPointer>
-
+#include <QTcpSocket>
+#include "3rdparty/json.hpp"
 
 namespace Ui {
 class UserPage;
@@ -17,6 +18,7 @@ public:
     explicit UserPage(QWidget *parent = nullptr);
     const Ui::UserPage &getUserPage() {return *ui;}
     ~UserPage();
+    QTcpSocket* socket;
 
 private slots:
 

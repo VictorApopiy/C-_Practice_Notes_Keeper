@@ -2,8 +2,8 @@
 #include "ui_deletednotes.h"
 #include "category.h"
 #include "userpage.h"
-#include "dynamicnote.h"
-#include "popupmenutextedit.h"
+#include "dynamiccategory.h"
+#include "popupmenubutton.h"
 
 DeletedNotes::DeletedNotes(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +11,13 @@ DeletedNotes::DeletedNotes(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    socket = new QTcpSocket(this);
+    connect(socket,SIGNAL(()),this,SLOT(()));
+    connect(socket,SIGNAL(()),this,SLOT(()));
+
+    ui->DNScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    lay = new QGridLayout(ui->DNScrollArea);
+    lay->addWidget(ui->DNScrollArea, 0, 0, 1, 3);
 }
 
 DeletedNotes::~DeletedNotes()
@@ -20,31 +27,22 @@ DeletedNotes::~DeletedNotes()
 
 void DeletedNotes::recieveData(QString str)
 {
-    ui->DNScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    QGridLayout *lay = new QGridLayout(ui->DNScrollArea);
-    lay->addWidget(ui->DNScrollArea, 0, 0, 1, 1);
 
-    auto  gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
-    auto  widget = new QWidget(ui->scrollAreaWidgetContents);
-    widget->setObjectName(QString::fromUtf8("widget"));
-    gridLayout->addWidget(widget, 0, 0, 1, 2);
+    DynamicCategory *deletedNote = new DynamicCategory(this);
+    deletedNote->setText(QString(str));
+    PopupMenuButton* menu = new PopupMenuButton(deletedNote, this);
+    QAction *restore;
+    restore = new QAction("Restor", this);
+    menu ->addAction(restore);
+    connect(restore, SIGNAL(triggered()), this, SLOT(show()));
+    deletedNote->setMenu(menu);
 
-
-
-    DynamicNote *deletedCategory = new DynamicNote(this);
-    deletedCategory->setText(QString(str));
-    PopupMenuTextEdit* menu = new PopupMenuTextEdit(deletedCategory, this);
-    menu ->addAction("Open");
-    menu ->addAction("Edit");
-    menu ->addAction("Delete");
-    //deletedCategory->setMenu(menu);
-    deletedCategory->setStyleSheet(       "color: rgb(27, 43, 66);"
+    deletedNote->setStyleSheet(       "color: rgb(27, 43, 66);"
                                    "border: 2px solid  rgb(27, 43, 66);"
                                    "border-radius: 10px;"
                                    "Text-align:left;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
 
-    deletedCategory->setFixedSize(224, 103);
-    gridLayout->addWidget(deletedCategory);
+    deletedNote->setFixedSize(224, 103);
+    lay->addWidget(deletedNote);
 
-   // connect(deletedCategory, SIGNAL(clicked()), this, SLOT(MenuOpenCategory()));
 }

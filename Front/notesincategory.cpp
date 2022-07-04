@@ -3,8 +3,9 @@
 #include "category.h"
 #include "userpage.h"
 #include "addsavenote.h"
-#include "dynamicnote.h"
-#include "popupmenutextedit.h"
+#include "dynamiccategory.h"
+#include "popupmenubutton.h"
+#include <QScopedPointer>
 
 NotesInCategory::NotesInCategory(QWidget *parent) :
     QMainWindow(parent),
@@ -12,14 +13,13 @@ NotesInCategory::NotesInCategory(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // m_addsavenote.reset(new AddSaveNote());
+    socket = new QTcpSocket(this);
+    connect(socket,SIGNAL(()),this,SLOT(()));
+    connect(socket,SIGNAL(()),this,SLOT(()));
 
-//     connect(ui->NCHomeButton, SIGNAL(clicked()), &m_categoryform, SLOT(show()));
-//     connect(ui->NCHomeButton, SIGNAL(clicked()), this, SLOT(close()));
-
-//     connect(ui->NCCreateNoteButton, SIGNAL(clicked()), m_addsavenote.get(), SLOT(show()));
-//     connect(ui->NCCreateNoteButton, SIGNAL(clicked()), this, SLOT(close()));
-
+    ui->NCScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    lay = new QGridLayout(ui->NCScrollArea);
+    lay->addWidget(ui->NCScrollArea, 0, 0, 1, 3);
     ui->NCSearchLEdit->setPlaceholderText(QString("Search"));
 }
 
@@ -30,33 +30,36 @@ NotesInCategory::~NotesInCategory()
 
 void NotesInCategory::recieveData(QString str)
 {
-    ui->NCScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    QGridLayout *lay = new QGridLayout(ui->NCScrollArea);
-    lay->addWidget(ui->NCScrollArea, 0, 0, 1, 1);
+    QScopedPointer <AddSaveNote> m_addsavenote;
+    m_addsavenote.reset(new AddSaveNote());
 
-    auto  gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
-    auto  widget = new QWidget(ui->scrollAreaWidgetContents);
-    widget->setObjectName(QString::fromUtf8("widget"));
-    gridLayout->addWidget(widget, 0, 0, 1, 2);
+    DynamicCategory *note = new DynamicCategory(this);
+    note->setText(QString(str));
+    PopupMenuButton* menu = new PopupMenuButton(note, this);
+    QAction *open;
+    open = new QAction("Open", this);
+    menu ->addAction(open);
+    connect(open, SIGNAL(triggered()), this, SLOT(show()));
 
+    QAction *edit;
+    edit = new QAction("Edit", this);
+    menu ->addAction(edit);
+    connect(edit, SIGNAL(triggered()), m_addsavenote.get(), SLOT(show()));
+    connect(edit, SIGNAL(triggered()), this, SLOT(close()));
 
+    QAction *adelete;
+    adelete = new QAction("Delete", this);
+    menu ->addAction(adelete);
+    connect(adelete, SIGNAL(triggered()), this, SLOT(show()));
+    note->setMenu(menu);
 
-    DynamicNote *deletedCategory = new DynamicNote(this);
-    deletedCategory->setText(QString(str));
-    PopupMenuTextEdit* menu = new PopupMenuTextEdit(deletedCategory, this);
-    menu ->addAction("Open");
-    menu ->addAction("Edit");
-    menu ->addAction("Delete");
-    //deletedCategory->setMenu(menu);
-    deletedCategory->setStyleSheet(       "color: rgb(27, 43, 66);"
+    note->setStyleSheet(       "color: rgb(27, 43, 66);"
                                    "border: 2px solid  rgb(27, 43, 66);"
                                    "border-radius: 10px;"
                                    "Text-align:left;font-family:yu gothic medium;font-size:20px;color:rgb(27, 43, 66);");
 
-    deletedCategory->setFixedSize(224, 103);
-    gridLayout->addWidget(deletedCategory);
-
-   // connect(deletedCategory, SIGNAL(clicked()), this, SLOT(MenuOpenCategory()));
+    note->setFixedSize(224, 103);
+    lay->addWidget(note);
 }
 
 
