@@ -10,14 +10,43 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addcategory.cpp \
     addsavenote.cpp \
-    main.cpp
+    category.cpp \
+    deletednotes.cpp \
+    dynamiccategory.cpp \
+    dynamicnote.cpp \
+    login.cpp \
+    main.cpp \
+    notesincategory.cpp \
+    popupmenubutton.cpp \
+    popupmenutextedit.cpp \
+    register.cpp \
+    userpage.cpp
 
 HEADERS += \
-    addsavenote.h
+    addcategory.h \
+    addsavenote.h \
+    category.h \
+    deletednotes.h \
+    dynamiccategory.h \
+    dynamicnote.h \
+    login.h \
+    notesincategory.h \
+    popupmenubutton.h \
+    popupmenutextedit.h \
+    register.h \
+    userpage.h
 
 FORMS += \
-    addsavenote.ui
+    addcategory.ui \
+    addsavenote.ui \
+    category.ui \
+    deletednotes.ui \
+    login.ui \
+    notesincategory.ui \
+    register.ui \
+    userpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

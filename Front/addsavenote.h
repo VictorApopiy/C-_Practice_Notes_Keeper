@@ -2,30 +2,23 @@
 #define ADDSAVENOTE_H
 
 #include <QMainWindow>
-#include <QtCore>
-#include <iostream>
-#include <QIODevice>
-#include <string>
-#include <vector>
-#include <memory.h>
-#include <QRegularExpression>
-#include <QStringConverter>
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class AddSaveNote : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    AddSaveNote(QWidget *parent = nullptr);
+    const Ui::MainWindow &getAddSaveNote() {return *ui;}
+    ~AddSaveNote();
 
 private slots:
-    void on_SaveNoteButton_clicked();
+    void on_ASNSaveNoteButton_clicked();
+
     void CreateJson(const QString &path);
 
 private:

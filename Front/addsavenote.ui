@@ -65,8 +65,14 @@
          <property name="spacing">
           <number>0</number>
          </property>
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
          <item>
-          <widget class="QPushButton" name="HomeButton">
+          <widget class="QPushButton" name="ASNHomeButton">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -125,7 +131,7 @@ color: rgb(27, 43, 66);</string>
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="UserButton">
+          <widget class="QPushButton" name="ASNUserButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -218,6 +224,7 @@ color: rgb(27, 43, 66);</string>
               </property>
               <property name="font">
                <font>
+                <family>Yu Gothic Medium</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -231,7 +238,7 @@ color: rgb(27, 43, 66);</string>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="CategoryComBox">
+             <widget class="QComboBox" name="ASNCategoryComBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -249,6 +256,11 @@ color: rgb(27, 43, 66);</string>
                 <width>600</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Yu Gothic Medium</family>
+               </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QComboBox {
@@ -353,6 +365,7 @@ QComboBox QAbstractItemView {
              <widget class="QLabel" name="label_3">
               <property name="font">
                <font>
+                <family>Yu Gothic Medium</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -365,7 +378,7 @@ QComboBox QAbstractItemView {
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="UserComBox">
+             <widget class="QComboBox" name="ASNUserComBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -383,6 +396,11 @@ QComboBox QAbstractItemView {
                 <width>600</width>
                 <height>55</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Yu Gothic Medium</family>
+               </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QComboBox {
@@ -503,6 +521,7 @@ QComboBox QAbstractItemView {
             </property>
             <property name="font">
              <font>
+              <family>Yu Gothic Medium</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -515,7 +534,7 @@ QComboBox QAbstractItemView {
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="KeywordsTEdit">
+           <widget class="QTextEdit" name="ASNKeywordsTEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -533,6 +552,11 @@ QComboBox QAbstractItemView {
               <width>600</width>
               <height>400</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Yu Gothic Medium</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true">background: white;
@@ -591,6 +615,7 @@ color: rgb(27, 43, 66);</string>
             </property>
             <property name="font">
              <font>
+              <family>Yu Gothic Medium</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -603,7 +628,7 @@ color: rgb(27, 43, 66);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="TitleLEdit">
+           <widget class="QLineEdit" name="ASNTitleLEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -621,6 +646,11 @@ color: rgb(27, 43, 66);</string>
               <width>1200</width>
               <height>55</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Yu Gothic Medium</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true">background: white;
@@ -662,6 +692,7 @@ color: rgb(27, 43, 66);</string>
             </property>
             <property name="font">
              <font>
+              <family>Yu Gothic Medium</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -675,7 +706,7 @@ color: rgb(27, 43, 66);</string>
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="DescriptionTEdit">
+           <widget class="QTextEdit" name="ASNDescriptionTEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -693,6 +724,11 @@ color: rgb(27, 43, 66);</string>
               <width>1200</width>
               <height>600</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Yu Gothic Medium</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true">background: white;
@@ -740,7 +776,7 @@ color: rgb(27, 43, 66);</string>
        <number>30</number>
       </property>
       <item>
-       <widget class="QPushButton" name="CanselButton">
+       <widget class="QPushButton" name="ASNCanselButton">
         <property name="minimumSize">
          <size>
           <width>257</width>
@@ -749,7 +785,7 @@ color: rgb(27, 43, 66);</string>
         </property>
         <property name="font">
          <font>
-          <family>Yu Gothic UI Semilight</family>
+          <family>Yu Gothic Medium</family>
           <pointsize>10</pointsize>
          </font>
         </property>
@@ -783,7 +819,7 @@ color: rgb(255, 255, 255);</string>
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="SaveNoteButton">
+       <widget class="QPushButton" name="ASNSaveNoteButton">
         <property name="minimumSize">
          <size>
           <width>257</width>
@@ -792,6 +828,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>Yu Gothic Medium</family>
           <pointsize>10</pointsize>
          </font>
         </property>
